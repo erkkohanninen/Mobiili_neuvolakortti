@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginRight="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_vertical_margin"
+    tools:context="mobiili.neuvolakortti.AddChildActivity">
+
+    <TextView
+        android:id="@+id/tv_add_child"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_child"
+        android:textSize="@dimen/text_size"
+        android:layout_marginTop="@dimen/margin_between"/>
+
+    <EditText
+        android:id="@+id/etChildName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/child_name"
+        android:layout_marginBottom="@dimen/margin_between"
+        android:layout_marginTop="@dimen/margin_between"/>
+
+    <TextView
+        android:id="@+id/tvDateOfBirth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/date_of_birth"
+        android:textSize="@dimen/text_size"/>
+
+    <Button
+        android:id="@+id/btn_date_of_birth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="syntymäpäivä" />
+
+    <EditText
+        android:id="@+id/et_ac_weight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/birth_weigh"/>
+
+    <EditText
+        android:id="@+id/et_ac_height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/birth_height"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/activity_horizontal_margin">
+
+
+        <Button
+            android:id="@+id/btn_ac_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:onClick="cancelAddChild"/>
+
+        <Button
+            android:id="@+id/btn_ac_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:onClick="saveChild"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

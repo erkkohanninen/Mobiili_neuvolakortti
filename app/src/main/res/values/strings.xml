@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Mobiilineuvolakortti</string>
+    <string name="child_name">Lapsen nimi</string>
+    <string name="date_of_birth">Syntymäpäivä</string>
+    <string name="add_child">Lisää lapsen tiedot:</string>
+    <string name="save">Tallenna</string>
+    <string name="cancel">Peruuta</string>
+    <string name="birth_weigh">Syntymäpaino</string>
+    <string name="birth_height">Syntymäpituus</string>
 </resources>
