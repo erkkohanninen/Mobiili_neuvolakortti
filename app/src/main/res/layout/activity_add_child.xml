@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_child"
-        android:textSize="@dimen/text_size"
+        android:textSize="@dimen/tv_text_size"
         android:layout_marginTop="@dimen/margin_between"/>
 
     <EditText
@@ -23,38 +23,101 @@
         android:layout_height="wrap_content"
         android:hint="@string/child_name"
         android:layout_marginBottom="@dimen/margin_between"
-        android:layout_marginTop="@dimen/margin_between"/>
+        android:layout_marginTop="@dimen/margin_between"
+        android:inputType="text"
+        android:textSize="@dimen/et_text_size"/>
 
     <TextView
         android:id="@+id/tvDateOfBirth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/date_of_birth"
-        android:textSize="@dimen/text_size"/>
+        android:textSize="@dimen/tv_text_size"/>
 
     <Button
         android:id="@+id/btn_date_of_birth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="syntymäpäivä" />
+        android:text="@string/choose"
+        android:onClick="datePicker"/>
 
-    <EditText
-        android:id="@+id/et_ac_weight"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/birth_weigh"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
 
-    <EditText
-        android:id="@+id/et_ac_height"
-        android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/et_ac_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/birth_weigh"
+            android:layout_weight="1"
+            android:inputType="numberDecimal"
+            android:textSize="@dimen/et_text_size"/>
+
+        <TextView
+            android:id="@+id/tv_ac_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/weight_g"
+            android:layout_weight="0.5"
+            android:textSize="@dimen/tv_text_size"/>
+
+        <EditText
+            android:id="@+id/et_ac_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/birth_height"
+            android:layout_weight="1"
+            android:inputType="numberDecimal"
+            android:textSize="@dimen/et_text_size"/>
+
+        <TextView
+            android:id="@+id/tv_ac_height"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/height_cm"
+            android:layout_weight="0.5"
+            android:textSize="@dimen/tv_text_size"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/birth_height"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+
+        <EditText
+            android:id="@+id/et_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/head"
+            android:inputType="numberDecimal"
+            android:textSize="@dimen/et_text_size"/>
+
+        <TextView
+            android:id="@+id/tv_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/height_cm"
+            android:textSize="@dimen/tv_text_size"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_add_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
         android:layout_marginBottom="@dimen/activity_horizontal_margin">
+
 
 
         <Button
@@ -73,10 +136,12 @@
             android:text="@string/save"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:onClick="saveChild"/>
+            android:onClick="saveAddChild"/>
 
     </LinearLayout>
 
 
 
 </LinearLayout>
+
+
