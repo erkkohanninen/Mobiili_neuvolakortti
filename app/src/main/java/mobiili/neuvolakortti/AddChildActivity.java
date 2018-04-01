@@ -18,6 +18,12 @@ import java.util.Calendar;
 public class AddChildActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
     private EditText etChildname;
+    private EditText etWeight;
+    private EditText etHeight;
+    private EditText etHead;
+    private String dateToDatabase;
+    private DbAdapter db;
+
     //lisää tähän muut jutut
 
     @Override
@@ -25,17 +31,28 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_child);
         etChildname = (EditText)findViewById(R.id.etChildName);
-        //lisää muut!!
+        etWeight = (EditText)findViewById(R.id.et_ac_weight);
+        etHeight = (EditText)findViewById(R.id.et_ac_height);
+        etHead = (EditText)findViewById(R.id.et_ac_head);
+        db = new DbAdapter(this);
     }
+
+    // Returns to MainActivity without saving child info to database
 
     void cancelAddChild(View view){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+    // save child´s info to database and return to MainActivity
+
     void saveAddChild(View view){
 
-        //nimi editTextistä, syntymäaika kalenterista, pituus, paino, päänympärys: tallenna tietokantaan
+        db.open();
+        db.addChild(new Child(etChildname.getText().toString(), dateToDatabase, etWeight.getText().toString(),
+                etHeight.getText().toString(), etHead.getText().toString()));
+        db.close();
+
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
@@ -43,14 +60,32 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
     }
 
 
-    // Sets the chosen date as text to button
+    // Sets the chosen date as text "DD.MM.YYYY" to button
+    // and converts date to "YYYY-MM-DD" -format to save to database
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        month += 1;
-        String pvm = Integer.toString(day) + "." + Integer.toString(month)
+
+        month = month + 1;
+        String strYear = String.valueOf(year);
+        String strMonth = String.valueOf(month);
+        String strDay = String.valueOf(day);
+
+
+        if(month < 9) {
+            strMonth = "0" + strMonth;
+
+        }
+
+        if(day < 10){
+            strDay = "0" + strDay;
+        }
+
+        String date = Integer.toString(day) + "." + Integer.toString(month)
                         + "." + Integer.toString(year);
         Button dof_button = (Button)findViewById(R.id.btn_date_of_birth);
-        dof_button.setText(pvm);
+        dof_button.setText(date);
+
+        dateToDatabase = strYear + "-" + strMonth + "-" + strDay;
     }
 
     //called when date of birth button is pressed

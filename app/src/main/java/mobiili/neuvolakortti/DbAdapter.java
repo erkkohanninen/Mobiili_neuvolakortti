@@ -1,5 +1,6 @@
 package mobiili.neuvolakortti;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -153,7 +154,17 @@ public class DbAdapter {
 
     //-----inserts a child------
 
-    public void insertChild(){
+    public void addChild(Child child){
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_CHILD_NAME, child.getName());
+        values.put(KEY_DATE_OF_BIRTH, child.getDateOfBirth());
+        values.put(KEY_BIRTH_WEIGHT, child.getWeight());
+        values.put(KEY_BIRTH_HEIGHT, child. getHeight());
+        values.put(KEY_BIRH_HEAD, child.getHead());
+
+        // Inserting Row
+        db.insert(TABLE_CHILD, null, values);
 
     }
 

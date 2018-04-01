@@ -91,7 +91,7 @@
         android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <EditText
-            android:id="@+id/et_head"
+            android:id="@+id/et_ac_head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/head"
