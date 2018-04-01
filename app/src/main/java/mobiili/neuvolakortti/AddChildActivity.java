@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 public class AddChildActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -49,8 +51,19 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
     void saveAddChild(View view){
 
         db.open();
-        db.addChild(new Child(etChildname.getText().toString(), dateToDatabase, etWeight.getText().toString(),
-                etHeight.getText().toString(), etHead.getText().toString()));
+        db.addChild(new Child(etChildname.getText().toString(), dateToDatabase, Float.valueOf(etWeight.getText().toString()),
+                Float.valueOf(etHeight.getText().toString()), Float.valueOf(etHead.getText().toString())));
+
+        // Reading all children DEBUGGAUSTA VARTEN
+        Log.d("Reading: ", "Reading all children..");
+        List<Child> children = db.getAllChildren();
+
+        for (Child child : children) {
+            String log = "Id: " + child.getId() + " ,Name: " + child.getName() + " ,Date of birth: " + child.getDateOfBirth()
+                    + " ,Weight:" + child.getWeight() + " ,Height:" + child.getHeight() + " ,Head:" + child.getHead();
+            // Writing shops  to log
+            Log.d("Children: : ", log);
+        }
         db.close();
 
         Intent intent = new Intent(this, MainActivity.class);

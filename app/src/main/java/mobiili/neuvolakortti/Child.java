@@ -9,16 +9,16 @@ public class Child {
     private int id;
     private String name;
     private String dateOfBirth;
-    private String weight;
-    private String height;
-    private String head;
+    private float weight;
+    private float height;
+    private float head;
 
     public Child()
     {
     }
 
-    public Child(String name, String dateOfBirth, String weight,
-                 String height, String head)
+    public Child(String name, String dateOfBirth, float weight,
+                 float height, float head)
     {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -37,6 +37,26 @@ public class Child {
         this.id = id;
     }
 
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setDateOfBirth(String dateOfBirth){
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setWeight(float weight){
+        this.weight = weight;
+    }
+
+    public void setHeight(float height){
+        this.height = height;
+    }
+
+    public void setHead(float head){
+        this.head = head;
+    }
+
     public int getId() {
 
         return id;
@@ -50,15 +70,15 @@ public class Child {
         return dateOfBirth;
     }
 
-    public String getWeight(){
+    public float getWeight(){
         return weight;
     }
 
-    public String getHeight(){
+    public float getHeight(){
         return height;
     }
 
-    public String getHead(){
+    public float getHead(){
         return head;
     }
 

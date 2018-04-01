@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tanja on 01/04/2018.
  */
@@ -34,7 +37,7 @@ public class DbAdapter {
     static final String KEY_DATE_OF_BIRTH = "date_of_birh";
     static final String KEY_BIRTH_WEIGHT = "birth_weight";
     static final String KEY_BIRTH_HEIGHT = "birth_height";
-    static final String KEY_BIRH_HEAD = "birth_head";
+    static final String KEY_BIRTH_HEAD = "birth_head";
 
     //Table vaccine column name
 
@@ -59,27 +62,27 @@ public class DbAdapter {
     static final String KEY_DATE_REACHED = "date_reached";
 
 
-    static final int DATABASE_VERSION = 1;
+    static final int DATABASE_VERSION = 5;
     static final String TAG = "DBUserAdapter";
 
 
     private static final String CREATE_TABLE_CHILD = "CREATE TABLE "
             + TABLE_CHILD + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CHILD_NAME
-            + " TEXT NOT NULL," + KEY_DATE_OF_BIRTH + " DATE NOT NULL," + KEY_BIRTH_WEIGHT + "FLOAT,"
-            + KEY_BIRTH_HEIGHT + "FLOAT," + KEY_BIRH_HEAD + "FLOAT " + ")";
+            + " TEXT NOT NULL," + KEY_DATE_OF_BIRTH + " DATE NOT NULL," + KEY_BIRTH_WEIGHT + " REAL,"
+            + KEY_BIRTH_HEIGHT + " REAL," + KEY_BIRTH_HEAD + " REAL " + ")";
 
     private static final String CREATE_TABLE_VACCINE = "CREATE TABLE "
             + TABLE_VACCINE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + KEY_VACCINE_NAME + "TEXT NOT NULL" + ")";
+            + KEY_VACCINE_NAME + " TEXT NOT NULL" + ")";
 
     private static final String CREATE_TABLE_VACCINATION = "CREATE TABLE "
             + TABLE_VACCINATION + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CHILD_ID
-            + " INTEGER NOT NULL," + KEY_VACCINE_ID + " INTEGER NOT NULL," + KEY_DATE_GIVEN + "DATE NOT NULL" + ")";
+            + " INTEGER NOT NULL," + KEY_VACCINE_ID + " INTEGER NOT NULL," + KEY_DATE_GIVEN + " DATE NOT NULL" + ")";
 
     private static final String CREATE_TABLE_MEASURES = "CREATE TABLE "
             + TABLE_MEASURES + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CHILD_ID
             + " INTEGER NOT NULL," + KEY_WEIGHT + " FLOAT, " + KEY_HEIGHT + " FLOAT," + KEY_HEAD
-            + "FLOAT" + KEY_DATE_MEASURED + "DATE NOT NULL" + ")";
+            + " FLOAT" + KEY_DATE_MEASURED + " DATE NOT NULL" + ")";
 
     private static final String CREATE_TABLE_DEVELOPMENTS = "CREATE TABLE "
             + TABLE_DEVELOPMENTS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_DEVELOPMENT_NAME
@@ -87,7 +90,7 @@ public class DbAdapter {
 
     private static final String CREATE_TABLE_DEVELOPMENT_STEP = "CREATE TABLE "
             + TABLE_DEVELOPMENT_STEP + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CHILD_ID
-            + " INTEGER NOT NULL," + KEY_DEVELOPMENTS_ID + "INTEGER NOT NULL," + KEY_DATE_REACHED + "DATE NOT NULL" + ")";
+            + " INTEGER NOT NULL," + KEY_DEVELOPMENTS_ID + " INTEGER NOT NULL," + KEY_DATE_REACHED + " DATE NOT NULL" + ")";
 
     final Context context;
     DatabaseHelper DBHelper;
@@ -161,11 +164,38 @@ public class DbAdapter {
         values.put(KEY_DATE_OF_BIRTH, child.getDateOfBirth());
         values.put(KEY_BIRTH_WEIGHT, child.getWeight());
         values.put(KEY_BIRTH_HEIGHT, child. getHeight());
-        values.put(KEY_BIRH_HEAD, child.getHead());
+        values.put(KEY_BIRTH_HEAD, child.getHead());
 
         // Inserting Row
         db.insert(TABLE_CHILD, null, values);
 
+    }
+
+    // Getting All Children
+    public List<Child> getAllChildren() {
+        List<Child> listOfChildren = new ArrayList<Child>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_CHILD;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Child child = new Child();
+                child.setId(Integer.parseInt(cursor.getString(0)));
+                child.setName(cursor.getString(1));
+                child.setDateOfBirth(cursor.getString(2));
+                child.setWeight(Float.parseFloat(cursor.getString(3)));
+                child.setHeight(Float.parseFloat(cursor.getString(4)));
+                child.setHead(Float.parseFloat(cursor.getString(5)));
+                // Adding child to list
+                listOfChildren.add(child);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return listOfChildren;
     }
 
 }
