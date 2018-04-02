@@ -50,6 +50,8 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
 
     void saveAddChild(View view){
 
+        //Lisää tarkistukset, ettei ole syötetty tyhjää tai lapsen tiedot jo tallennettu.
+
         db.open();
         db.addChild(new Child(etChildname.getText().toString(), dateToDatabase, Float.valueOf(etWeight.getText().toString()),
                 Float.valueOf(etHeight.getText().toString()), Float.valueOf(etHead.getText().toString())));
@@ -59,8 +61,7 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
         List<Child> children = db.getAllChildren();
 
         for (Child child : children) {
-            String log = "Id: " + child.getId() + " ,Name: " + child.getName() + " ,Date of birth: " + child.getDateOfBirth()
-                    + " ,Weight:" + child.getWeight() + " ,Height:" + child.getHeight() + " ,Head:" + child.getHead();
+            String log = "Id: " + child.getId() + " ,Name: " + child.getName() + " ,Date of birth: " + child.getDateOfBirth();
             // Writing shops  to log
             Log.d("Children: : ", log);
         }

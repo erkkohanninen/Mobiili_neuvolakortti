@@ -35,9 +35,6 @@ public class DbAdapter {
     //Table child column names
     static final String KEY_CHILD_NAME = "child_name";
     static final String KEY_DATE_OF_BIRTH = "date_of_birh";
-    static final String KEY_BIRTH_WEIGHT = "birth_weight";
-    static final String KEY_BIRTH_HEIGHT = "birth_height";
-    static final String KEY_BIRTH_HEAD = "birth_head";
 
     //Table vaccine column name
 
@@ -62,14 +59,13 @@ public class DbAdapter {
     static final String KEY_DATE_REACHED = "date_reached";
 
 
-    static final int DATABASE_VERSION = 5;
+    static final int DATABASE_VERSION = 7;
     static final String TAG = "DBUserAdapter";
 
 
     private static final String CREATE_TABLE_CHILD = "CREATE TABLE "
             + TABLE_CHILD + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CHILD_NAME
-            + " TEXT NOT NULL," + KEY_DATE_OF_BIRTH + " DATE NOT NULL," + KEY_BIRTH_WEIGHT + " REAL,"
-            + KEY_BIRTH_HEIGHT + " REAL," + KEY_BIRTH_HEAD + " REAL " + ")";
+            + " TEXT NOT NULL," + KEY_DATE_OF_BIRTH + " DATE NOT NULL " + ")";
 
     private static final String CREATE_TABLE_VACCINE = "CREATE TABLE "
             + TABLE_VACCINE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -81,8 +77,8 @@ public class DbAdapter {
 
     private static final String CREATE_TABLE_MEASURES = "CREATE TABLE "
             + TABLE_MEASURES + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CHILD_ID
-            + " INTEGER NOT NULL," + KEY_WEIGHT + " FLOAT, " + KEY_HEIGHT + " FLOAT," + KEY_HEAD
-            + " FLOAT" + KEY_DATE_MEASURED + " DATE NOT NULL" + ")";
+            + " INTEGER NOT NULL," + KEY_WEIGHT + " REAL, " + KEY_HEIGHT + " REAL," + KEY_HEAD
+            + " REAL," + KEY_DATE_MEASURED + " DATE NOT NULL" + ")";
 
     private static final String CREATE_TABLE_DEVELOPMENTS = "CREATE TABLE "
             + TABLE_DEVELOPMENTS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_DEVELOPMENT_NAME
@@ -159,17 +155,39 @@ public class DbAdapter {
 
     public void addChild(Child child){
 
+        //add values in order to put in table_child
         ContentValues values = new ContentValues();
         values.put(KEY_CHILD_NAME, child.getName());
         values.put(KEY_DATE_OF_BIRTH, child.getDateOfBirth());
-        values.put(KEY_BIRTH_WEIGHT, child.getWeight());
-        values.put(KEY_BIRTH_HEIGHT, child. getHeight());
-        values.put(KEY_BIRTH_HEAD, child.getHead());
 
-        // Inserting Row
+        // insert Row to table_child
         db.insert(TABLE_CHILD, null, values);
 
+        //Get Child´s ID from database in order to insert birth measures to table_measures
+        String getChildId = "SELECT " + KEY_ID + " FROM " + TABLE_CHILD + " WHERE " + KEY_CHILD_NAME + " = '" + child.getName() + "'";
+
+        Cursor cursor = db.rawQuery(getChildId, null);
+        if(cursor != null){
+            cursor.moveToFirst();
+            String child_id_fetched = cursor.getString(0);
+            cursor.close();
+            Log.d("id: ", child_id_fetched);
+
+            // add values in order to put in table_measures
+            ContentValues values1 = new ContentValues();
+            values1.put(KEY_CHILD_ID, child_id_fetched);
+            values1.put(KEY_WEIGHT, child.getWeight());
+            values1.put(KEY_HEIGHT, child.getHeight());
+            values1.put(KEY_HEAD, child.getHead());
+            values1.put(KEY_DATE_MEASURED, child.getDateOfBirth());
+            //insert row to table_measures
+            db.insert(TABLE_MEASURES, null, values1);
+        }
+        else {
+            Log.d(TAG,"notfound");
+        }
     }
+
 
     // Getting All Children
     public List<Child> getAllChildren() {
@@ -186,9 +204,7 @@ public class DbAdapter {
                 child.setId(Integer.parseInt(cursor.getString(0)));
                 child.setName(cursor.getString(1));
                 child.setDateOfBirth(cursor.getString(2));
-                child.setWeight(Float.parseFloat(cursor.getString(3)));
-                child.setHeight(Float.parseFloat(cursor.getString(4)));
-                child.setHead(Float.parseFloat(cursor.getString(5)));
+
                 // Adding child to list
                 listOfChildren.add(child);
             } while (cursor.moveToNext());
