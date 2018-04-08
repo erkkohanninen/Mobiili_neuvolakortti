@@ -65,6 +65,15 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
             // Writing shops  to log
             Log.d("Children: : ", log);
         }
+
+        //Reading all developments DEBUGGAUSTA VARTEN
+
+        List<String> developments = db.getAllDevelopments();
+
+        for (String development : developments){
+            String log = "Development: " + development;
+            Log.d("Developments: ", log);
+        }
         db.close();
 
         Intent intent = new Intent(this, MainActivity.class);

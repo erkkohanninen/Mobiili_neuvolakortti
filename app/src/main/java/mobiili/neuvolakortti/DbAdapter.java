@@ -59,7 +59,7 @@ public class DbAdapter {
     static final String KEY_DATE_REACHED = "date_reached";
 
 
-    static final int DATABASE_VERSION = 7;
+    static final int DATABASE_VERSION = 11;
     static final String TAG = "DBUserAdapter";
 
 
@@ -115,8 +115,36 @@ public class DbAdapter {
                 db.execSQL(CREATE_TABLE_DEVELOPMENTS);
                 db.execSQL(CREATE_TABLE_DEVELOPMENT_STEP);
 
-                //TÄHÄN SYÖTETÄÄN DEVELOPMENT_STEPS TAULUUN VALMIIKSI KEHITYSASKELEET JA VACCINE
-                //TAULUUN SAMA HOMMA??
+
+                // Insert vaccine names to table_vaccine
+
+                db.execSQL("INSERT INTO 'vaccine' ('vaccine_name') VALUES ('Rotavirus')");
+                db.execSQL("INSERT INTO 'vaccine' ('vaccine_name') VALUES ('Vesirokko')");
+                db.execSQL("INSERT INTO 'vaccine' ('vaccine_name') VALUES ('PCV')");
+                db.execSQL("INSERT INTO 'vaccine' ('vaccine_name') VALUES ('DTaP-IPV-Hib')");
+                db.execSQL("INSERT INTO 'vaccine' ('vaccine_name') VALUES ('MPR')");
+                db.execSQL("INSERT INTO 'vaccine' ('vaccine_name') VALUES ('Influenssa')");
+
+
+
+                //Insert developments to table_developments
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Jokin merkittävä sana')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Kävelee tuetta')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Seisoo tuetta')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Kävelee tukien')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Nousee pystyyn')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Peukalo-etusormiote')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Nousee istumaan')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Ensimmäinen hammas')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Kääntyy vatsalleen')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Tarttuu esineeseen')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Kannattaa päätään käsistä kohottaessa')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Jokeltaa')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Konttaa')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Ryömii')");
+                db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Nauraa')");
+
+
 
             } catch (SQLException e){
                 e.printStackTrace();
@@ -212,6 +240,20 @@ public class DbAdapter {
 
         // return contact list
         return listOfChildren;
+    }
+
+    public List<String> getAllDevelopments(){
+        List<String> listOfDevelopments = new ArrayList<>();
+        //Selecet all -query
+        String selectQuery = "SELECT " + KEY_DEVELOPMENT_NAME + " FROM " + TABLE_DEVELOPMENTS;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //looping through all rows and adding to list
+        if(cursor.moveToFirst()){
+            do{
+                listOfDevelopments.add(cursor.getString(0));
+            }while (cursor.moveToNext());
+        }
+        return listOfDevelopments;
     }
 
 }
