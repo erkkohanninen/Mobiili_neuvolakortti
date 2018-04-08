@@ -256,4 +256,14 @@ public class DbAdapter {
         return listOfDevelopments;
     }
 
+    public boolean checkIfExists(String childName){
+        Cursor cursor = db.query(TABLE_CHILD, null, KEY_CHILD_NAME + "=?", new String[]{childName},
+                null, null, null);
+        if(cursor.getCount() > 0){
+            return false;
+        }
+        return true;
+
+    }
+
 }

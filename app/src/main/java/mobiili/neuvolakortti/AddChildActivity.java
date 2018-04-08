@@ -5,15 +5,19 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Date;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -23,10 +27,14 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
     private EditText etWeight;
     private EditText etHeight;
     private EditText etHead;
-    private String dateToDatabase;
+    private String dateToDatabase = "";
+    private String childName = "";
+    private String weight = "";
+    private String height = "";
+    private String head ="";
     private DbAdapter db;
 
-    //lisää tähän muut jutut
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,37 +57,53 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
     // save child´s info to database and return to MainActivity
 
     void saveAddChild(View view){
-
-        //Lisää tarkistukset, ettei ole syötetty tyhjää tai lapsen tiedot jo tallennettu.
-
         db.open();
-        db.addChild(new Child(etChildname.getText().toString(), dateToDatabase, Float.valueOf(etWeight.getText().toString()),
-                Float.valueOf(etHeight.getText().toString()), Float.valueOf(etHead.getText().toString())));
+        childName = etChildname.getText().toString();
+        weight = etWeight.getText().toString();
+        height = etHeight.getText().toString();
+        head = etHead.getText().toString();
+        String[] strings = {childName, dateToDatabase, weight, height, head};
 
-        // Reading all children DEBUGGAUSTA VARTEN
-        Log.d("Reading: ", "Reading all children..");
-        List<Child> children = db.getAllChildren();
+        //Check that user has filled all information
+       if (! areSet(strings)){
+           Toast.makeText(this, "Täytä kaikki kohdat!", Toast.LENGTH_LONG).show();
+       }
+        //Check if child´s info already exists
+       else if(!db.checkIfExists(childName)){
+           Toast.makeText(this, "Lapsen tiedot on jo lisätty", Toast.LENGTH_LONG).show();
+       }
+       else {
+            db.addChild(new Child(childName, dateToDatabase, Float.valueOf(weight),
+                    Float.valueOf(height), Float.valueOf(head)));
+            Toast.makeText(this, "Lapsen tiedot lisätty", Toast.LENGTH_LONG).show();
 
-        for (Child child : children) {
-            String log = "Id: " + child.getId() + " ,Name: " + child.getName() + " ,Date of birth: " + child.getDateOfBirth();
-            // Writing shops  to log
-            Log.d("Children: : ", log);
-        }
+             /**
+             * DEBUGGAUS VARTEN LAPSIOLIOIDEN JA KEHITYSASKEL-LISTAN LÄPIKÄYNTI
+             */
+            Log.d("Reading: ", "Reading all children..");
+            List<Child> children = db.getAllChildren();
 
-        //Reading all developments DEBUGGAUSTA VARTEN
+            for (Child child : children) {
+                String log = "Id: " + child.getId() + " ,Name: " + child.getName() + " ,Date of birth: " + child.getDateOfBirth();
+                // Writing shops  to log
+                Log.d("Children: : ", log);
+            }
 
-        List<String> developments = db.getAllDevelopments();
 
-        for (String development : developments){
-            String log = "Development: " + development;
-            Log.d("Developments: ", log);
-        }
-        db.close();
+            List<String> developments = db.getAllDevelopments();
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+            for (String development : developments){
+                String log = "Development: " + development;
+                Log.d("Developments: ", log);
+            }
 
-        //Ilmoitus toast tietojen lisäämisestä?
+            db.close();
+
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+
+            }
+
     }
 
 
@@ -116,6 +140,15 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
         DialogFragment fragment = new DatePickerFragment();
         fragment.show(getFragmentManager(), "datePicker");
 
+    }
+
+    public boolean areSet(String... strings)
+    {
+        for (String s: strings)
+            if(TextUtils.isEmpty(s)){
+            return false;
+        }
+        return true;
     }
 
 }
