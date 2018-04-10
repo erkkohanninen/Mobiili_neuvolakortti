@@ -1,5 +1,6 @@
 package mobiili.neuvolakortti;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -51,9 +52,18 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder
             view = itemView;
             //Click listener for profile
             view.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    //Intent intent = new Intent(v.getContext(), AddChildActivity.class);
-                    //anv.getContext().startActivity(intent);
+                @Override
+                public void onClick(View v) {
+                    String currentChildName = (currentChild.getName());
+                    String currentChildAge = calcAge((currentChild.getDateOfBirth()));
+                    int currentChildId = (currentChild.getId());
+                    Context context = v.getContext();
+                    Intent intent = new Intent(context, ChildProfileActivity.class);
+                    // sending current child's name, age and id to ChildProfileActivity
+                    intent.putExtra("NAME", currentChildName);
+                    intent.putExtra("AGE", currentChildAge);
+                    intent.putExtra("ID", currentChildId);
+                    context.startActivity(intent);
                 }
             });
             nameTextView = itemView.findViewById(R.id.tv_child_name);
@@ -87,4 +97,5 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder
 
         return age;
     }
+
 }
