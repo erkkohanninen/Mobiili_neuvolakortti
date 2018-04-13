@@ -3,6 +3,7 @@ package mobiili.neuvolakortti;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -27,6 +28,7 @@ public class VaccinationActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
         debugvaccineList();
     }
@@ -37,6 +39,22 @@ public class VaccinationActivity extends AppCompatActivity {
 
     public void debugvaccineList(){
         Vaccine vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccineList.add(vaccine);
+        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccineList.add(vaccine);
+        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccineList.add(vaccine);
+        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccineList.add(vaccine);
+        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccineList.add(vaccine);
+        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccineList.add(vaccine);
+        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccineList.add(vaccine);
+        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccineList.add(vaccine);
+        vaccine = new Vaccine("hoplaa", "1.1.2017");
         vaccineList.add(vaccine);
         vaccine = new Vaccine("hoplaa", "1.1.2017");
         vaccineList.add(vaccine);
