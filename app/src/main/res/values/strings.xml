@@ -8,7 +8,9 @@
     <string name="birth_weigh">Syntymäpaino</string>
     <string name="birth_height">Syntymäpituus</string>
     <string name="choose">Valitse</string>
-    <string name="weight_g">g</string>
+    <string name="weight_g">kg</string>
     <string name="height_cm">cm</string>
     <string name="head">Päänympärys</string>
+    <string name="add_vaccine">Valitse rokote:</string>
+    <string name="add_date_given">Valitse päivämäärä:</string>
 </resources>

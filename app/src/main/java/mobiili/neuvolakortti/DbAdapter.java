@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -264,6 +265,53 @@ public class DbAdapter {
         }
         return true;
 
+    }
+
+    public void addVaccination(String childName, String vaccineName, String dateGiven){
+        String id_child = getChildId(childName);
+        String id_vaccine = getVaccineId(vaccineName);
+        if(id_child.equals("notfound") || id_vaccine.equals("notfound")){
+            Log.d(TAG,"notfound");
+        }
+        else {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_CHILD_ID, id_child);
+            contentValues.put(KEY_VACCINE_ID, id_vaccine);
+            contentValues.put(KEY_DATE_GIVEN, dateGiven);
+            db.insert(TABLE_VACCINATION, null, contentValues);
+        }
+
+    }
+
+    public String getChildId(String childName){
+        Cursor cursor = db.rawQuery("SELECT _id FROM child WHERE child_name=?", new String[]{childName});
+        if(cursor != null){
+            cursor.moveToFirst();
+            String id_fetched = cursor.getString(0);
+            cursor.close();
+            return id_fetched;
+        }
+        else {
+            return "notfound";
+        }
+    }
+
+    public String getVaccineId(String vaccineName){
+        Cursor cursor = db.rawQuery("SELECT _id FROM vaccine WHERE vaccine_name=?", new String[]{vaccineName});
+        if(cursor != null){
+            cursor.moveToFirst();
+            String id_fetched = cursor.getString(0);
+            cursor.close();
+            return id_fetched;
+        }
+        else {
+            return "notfound";
+        }
+
+    }
+
+    public Cursor getAllVaccines(){
+        return db.rawQuery("SELECT vaccine_name FROM " + TABLE_VACCINE , null);
     }
 
 }

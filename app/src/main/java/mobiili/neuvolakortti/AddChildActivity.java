@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.util.List;
 
@@ -124,6 +125,7 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
                         + "." + Integer.toString(year);
         Button dof_button = (Button)findViewById(R.id.btn_date_of_birth);
         dof_button.setText(date);
+
 
         dateToDatabase = strYear + "-" + strMonth + "-" + strDay;
     }

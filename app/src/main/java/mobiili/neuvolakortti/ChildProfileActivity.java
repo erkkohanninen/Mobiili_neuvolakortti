@@ -47,6 +47,7 @@ public class ChildProfileActivity extends AppCompatActivity {
 
     public void goToVaccination(View view){
         Intent intent = new Intent(this, VaccinationActivity.class);
+        intent.putExtra("NAME", childName);
         startActivity(intent);
     }
 
