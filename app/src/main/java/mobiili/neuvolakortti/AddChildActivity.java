@@ -11,14 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.sql.Date;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class AddChildActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -108,7 +101,7 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
 
 
     // Sets the chosen date as text "DD.MM.YYYY" to button
-    // and converts date to "YYYY-MM-DD" -format to save to database
+    // and converts date to "YYYY-MM-DD" -format to save to database*/
     @Override
     public void onDateSet(DatePicker view, int year, int month, int day) {
 
