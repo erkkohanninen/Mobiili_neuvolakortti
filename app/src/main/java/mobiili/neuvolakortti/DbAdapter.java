@@ -343,15 +343,5 @@ public class DbAdapter {
         db.execSQL("DELETE FROM " + TABLE_VACCINATION + " WHERE " + KEY_ID + " = '" + id + "';");
     }
 
-
-
 }
 
-   /* //---deletes a particular expense---
-    public void deleteExpense(long rowId)
-    {
-        db.execSQL("DELETE FROM "
-                + DATABASE_TABLE
-                + " WHERE " + KEY_ROWID + " = '" + rowId + "';");
-
-}*/

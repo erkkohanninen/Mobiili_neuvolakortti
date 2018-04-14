@@ -54,7 +54,7 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         final Vaccine vaccine = vaccineList.get(position);
         holder.vaccine_name.setText(vaccine.getName());
@@ -76,6 +76,7 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
                 db.close();
                 vaccineList.remove(position);
                 notifyItemRemoved(position);
+                notifyItemRangeChanged(position, getItemCount());
             }
         });
     }
