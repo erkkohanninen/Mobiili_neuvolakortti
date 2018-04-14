@@ -31,6 +31,7 @@ public class VaccinationActivity extends AppCompatActivity{
     private ArrayList<String> vaccines;
     private String childName;
     private int childId;
+    private DbAdapter dbb = new DbAdapter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +43,10 @@ public class VaccinationActivity extends AppCompatActivity{
             childId = extras.getInt("ID");
         }
 
+        // Populate recyclerview with child´s vaccinations
         getAllVaccinations();
         recyclerView = (RecyclerView) findViewById(R.id.rv_vaccination);
-        mAdapter = new VaccinationAdapter(vaccineList);
+        mAdapter = new VaccinationAdapter(vaccineList, dbb);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -52,12 +54,14 @@ public class VaccinationActivity extends AppCompatActivity{
         recyclerView.setAdapter(mAdapter);
     }
 
+    // Dialog to add new vaccination
+
     public void addVaccination(View view){
 
         loadSpinnerData();
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(VaccinationActivity.this);
         View mview = getLayoutInflater().inflate(R.layout.dialog_add_vaccination, null);
-        mDialogBuilder.setTitle("Lisää rokotus");
+        mDialogBuilder.setTitle(R.string.add_vaccination);
         final Spinner mSpinner = (Spinner) mview.findViewById(R.id.spinner_vaccine);
         final DatePicker mPicker = (DatePicker) mview.findViewById(R.id.datePicker_vaccine);
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(VaccinationActivity.this,
@@ -66,7 +70,7 @@ public class VaccinationActivity extends AppCompatActivity{
         mSpinner.setAdapter(adapter);
 
 
-        mDialogBuilder.setPositiveButton("Lisää", new DialogInterface.OnClickListener() {
+        mDialogBuilder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //Vaccine name from Spinner
@@ -89,7 +93,7 @@ public class VaccinationActivity extends AppCompatActivity{
                 String dateGiven = year + "-" + month + "-" + day;
                 DbAdapter db = new DbAdapter(VaccinationActivity.this);
                 db.open();
-                db.addVaccination(childName, vaccineName, dateGiven);
+                db.addVaccination(childId, vaccineName, dateGiven);
 
                 //Clear current items from vaccineList and refresh it with new data
                 vaccineList.clear();
@@ -99,7 +103,7 @@ public class VaccinationActivity extends AppCompatActivity{
             }
         });
 
-        mDialogBuilder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
+        mDialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -113,10 +117,9 @@ public class VaccinationActivity extends AppCompatActivity{
 
     }
 
+    // Get all vaccine names to a list
+
     public void loadSpinnerData(){
-
-        //lisää tähän haku tietokannasta -> kaikki rokotusten nimet
-
         DbAdapter db = new DbAdapter(this);
         db.open();
         Cursor cursor = db.getAllVaccines();
@@ -133,6 +136,8 @@ public class VaccinationActivity extends AppCompatActivity{
         db.close();
 
     }
+
+    // Get all child´ vaccinations to vaccineList
 
     public void getAllVaccinations(){
         DbAdapter db = new DbAdapter(this);

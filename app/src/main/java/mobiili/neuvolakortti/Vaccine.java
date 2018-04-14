@@ -6,13 +6,15 @@ package mobiili.neuvolakortti;
 
 public class Vaccine {
 
+    private String id;
     private String name;
     private String date;
 
     public Vaccine(){}
-    public Vaccine(String name, String date){
+    public Vaccine(String name, String date, String id){
         this.name = name;
         this.date = date;
+        this.id = id;
     }
 
     public void setName(String name){
@@ -23,11 +25,13 @@ public class Vaccine {
         this.date = date;
     }
 
+    public void setId(String id) { this.id = id; }
+
     public String getName(){
         return name;
     }
 
-    public String getDate(){
-        return date;
-    }
+    public String getDate(){return date;}
+
+    public String getId(){ return id;}
 }

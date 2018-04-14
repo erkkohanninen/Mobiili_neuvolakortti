@@ -218,7 +218,8 @@ public class DbAdapter {
     }
 
 
-    // Getting All Children
+    //-----Get all children------
+
     public List<Child> getAllChildren() {
         List<Child> listOfChildren = new ArrayList<Child>();
         // Select All Query
@@ -243,6 +244,8 @@ public class DbAdapter {
         return listOfChildren;
     }
 
+    //-----Get all developments------
+
     public List<String> getAllDevelopments(){
         List<String> listOfDevelopments = new ArrayList<>();
         //Selecet all -query
@@ -257,6 +260,8 @@ public class DbAdapter {
         return listOfDevelopments;
     }
 
+    //-----Checks if child already exist in database------
+
     public boolean checkIfExists(String childName){
         Cursor cursor = db.query(TABLE_CHILD, null, KEY_CHILD_NAME + "=?", new String[]{childName},
                 null, null, null);
@@ -267,15 +272,16 @@ public class DbAdapter {
 
     }
 
-    public void addVaccination(String childName, String vaccineName, String dateGiven){
-        String id_child = getChildId(childName);
+    //-----Adds new vaccination to vaccinations-table------
+
+    public void addVaccination(Integer childId, String vaccineName, String dateGiven){
         String id_vaccine = getVaccineId(vaccineName);
-        if(id_child.equals("notfound") || id_vaccine.equals("notfound")){
+        if(id_vaccine.equals("notfound")){
             Log.d(TAG,"notfound");
         }
         else {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(KEY_CHILD_ID, id_child);
+            contentValues.put(KEY_CHILD_ID, childId);
             contentValues.put(KEY_VACCINE_ID, id_vaccine);
             contentValues.put(KEY_DATE_GIVEN, dateGiven);
             db.insert(TABLE_VACCINATION, null, contentValues);
@@ -283,18 +289,8 @@ public class DbAdapter {
 
     }
 
-    public String getChildId(String childName){
-        Cursor cursor = db.rawQuery("SELECT _id FROM child WHERE child_name=?", new String[]{childName});
-        if(cursor != null){
-            cursor.moveToFirst();
-            String id_fetched = cursor.getString(0);
-            cursor.close();
-            return id_fetched;
-        }
-        else {
-            return "notfound";
-        }
-    }
+
+    //-----Gets vaccine_id based on vaccine name------
 
     public String getVaccineId(String vaccineName){
         Cursor cursor = db.rawQuery("SELECT _id FROM vaccine WHERE vaccine_name=?", new String[]{vaccineName});
@@ -310,14 +306,18 @@ public class DbAdapter {
 
     }
 
+    //-----Returns all vaccines ------
+
     public Cursor getAllVaccines(){
         return db.rawQuery("SELECT vaccine_name FROM " + TABLE_VACCINE , null);
     }
 
+    //-----Returns all vaccinations based on child id------
+
     public List<Vaccine> getAllVaccinations(int childId){
         List<Vaccine> listOfVaccinations = new ArrayList<Vaccine>();
 
-        Cursor cursor = db.rawQuery("SELECT vaccine_name, date_given FROM " + TABLE_VACCINE +
+        Cursor cursor = db.rawQuery("SELECT vaccine_name, date_given, tvv._id FROM " + TABLE_VACCINE +
                 " tv, " + TABLE_VACCINATION + " tvv WHERE tvv." + KEY_CHILD_ID + " = '" + childId + "'" +
                 " AND tv." + KEY_ID + " = " + "tvv." + KEY_VACCINE_ID + " ORDER BY date_given DESC", null);
         //looping through all rows and adding to list
@@ -326,6 +326,7 @@ public class DbAdapter {
                 Vaccine vaccination = new Vaccine();
                 vaccination.setName(cursor.getString(0));
                 vaccination.setDate(cursor.getString(1));
+                vaccination.setId(cursor.getString(2));
 
 
                 // Adding vaccination to list
@@ -337,4 +338,20 @@ public class DbAdapter {
 
     }
 
+    public void deleteVaccination(String id){
+
+        db.execSQL("DELETE FROM " + TABLE_VACCINATION + " WHERE " + KEY_ID + " = '" + id + "';");
+    }
+
+
+
 }
+
+   /* //---deletes a particular expense---
+    public void deleteExpense(long rowId)
+    {
+        db.execSQL("DELETE FROM "
+                + DATABASE_TABLE
+                + " WHERE " + KEY_ROWID + " = '" + rowId + "';");
+
+}*/
