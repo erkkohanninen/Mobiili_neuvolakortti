@@ -25,13 +25,12 @@ import java.util.List;
 
 public class VaccinationActivity extends AppCompatActivity{
 
-    private List<Vaccine> vaccineList = new ArrayList<>();
+    private List<Vaccine> vaccineList;
     private RecyclerView recyclerView;
     private VaccinationAdapter mAdapter;
     private ArrayList<String> vaccines;
     private String childName;
     private int childId;
-    private List<Vaccine> vaccinations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +50,6 @@ public class VaccinationActivity extends AppCompatActivity{
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
-        //debugvaccineList();
-        //getAllVaccinations();
     }
 
     public void addVaccination(View view){
@@ -93,6 +90,11 @@ public class VaccinationActivity extends AppCompatActivity{
                 DbAdapter db = new DbAdapter(VaccinationActivity.this);
                 db.open();
                 db.addVaccination(childName, vaccineName, dateGiven);
+
+                //Clear current items from vaccineList and refresh it with new data
+                vaccineList.clear();
+                vaccineList.addAll(db.getAllVaccinations(childId));
+                mAdapter.notifyDataSetChanged();
                 db.close();
             }
         });
@@ -136,61 +138,7 @@ public class VaccinationActivity extends AppCompatActivity{
         DbAdapter db = new DbAdapter(this);
         db.open();
         vaccineList = db.getAllVaccinations(childId);
-        vaccinations = db.getAllVaccinations(childId);
-
-        Log.d("Reading: ", "Reading all vaccinations..");
-
-        for (Vaccine vaccine : vaccinations) {
-            String log = "Name: " + vaccine.getName() + " ,Date: " + vaccine.getDate();
-            // Writing shops  to log
-            Log.d("Vaccinations: : ", log);
-        }
         db.close();
-
-
-    }
-
-
-    public void debugvaccineList(){
-        Vaccine vaccine = new Vaccine("MPR", "1.7.2014");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("Vesirokko", "1.1.2017");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("Rotavirus", "20.3.2016");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("PCV", "30.2.2015");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("DTaP-IPV-Hib", "15.7.2014");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("MPR", "26.4.2016");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("Influenssa", "29.10.2017");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("Vesirokko", "1.1.2017");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("Rotavirus", "20.3.2016");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("PCV", "30.2.2015");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("DTaP-IPV-Hib", "15.7.2014");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("MPR", "26.4.2016");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("Influenssa", "29.10.2017");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("Vesirokko", "1.1.2017");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("Rotavirus", "20.3.2016");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("PCV", "30.2.2015");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("DTaP-IPV-Hib", "15.7.2014");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("MPR", "26.4.2016");
-        vaccineList.add(vaccine);
-        vaccine = new Vaccine("Influenssa", "29.10.2017");
-        vaccineList.add(vaccine);
-
     }
 
 }
