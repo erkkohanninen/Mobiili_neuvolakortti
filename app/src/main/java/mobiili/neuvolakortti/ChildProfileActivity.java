@@ -24,6 +24,7 @@ public class ChildProfileActivity extends AppCompatActivity {
     public Child currentChild;
     private String childName;
     private String childAge;
+    private int id;
     private String dateToDatabase = "";
     Dialog dialogEdit;
 
@@ -35,7 +36,7 @@ public class ChildProfileActivity extends AppCompatActivity {
         nameTextView = (TextView) findViewById(R.id.tv_profile_name);
         ageTextView = (TextView) findViewById(R.id.tv_profile_age);
 
-        Integer id = getIntent().getIntExtra("ID", 0);
+        id = getIntent().getIntExtra("ID", 0);
         childName = getIntent().getStringExtra("NAME");
         childAge = getIntent().getStringExtra("AGE");
 
@@ -48,6 +49,7 @@ public class ChildProfileActivity extends AppCompatActivity {
     public void goToVaccination(View view){
         Intent intent = new Intent(this, VaccinationActivity.class);
         intent.putExtra("NAME", childName);
+        intent.putExtra("ID", id);
         startActivity(intent);
     }
 

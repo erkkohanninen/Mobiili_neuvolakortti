@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,6 +30,8 @@ public class VaccinationActivity extends AppCompatActivity{
     private VaccinationAdapter mAdapter;
     private ArrayList<String> vaccines;
     private String childName;
+    private int childId;
+    private List<Vaccine> vaccinations;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +40,10 @@ public class VaccinationActivity extends AppCompatActivity{
         Bundle extras = getIntent().getExtras();
         if (extras != null){
             childName = extras.getString("NAME");
+            childId = extras.getInt("ID");
         }
 
-
+        getAllVaccinations();
         recyclerView = (RecyclerView) findViewById(R.id.rv_vaccination);
         mAdapter = new VaccinationAdapter(vaccineList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -47,7 +51,8 @@ public class VaccinationActivity extends AppCompatActivity{
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         recyclerView.setAdapter(mAdapter);
-        debugvaccineList();
+        //debugvaccineList();
+        //getAllVaccinations();
     }
 
     public void addVaccination(View view){
@@ -56,8 +61,8 @@ public class VaccinationActivity extends AppCompatActivity{
         AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(VaccinationActivity.this);
         View mview = getLayoutInflater().inflate(R.layout.dialog_add_vaccination, null);
         mDialogBuilder.setTitle("Lisää rokotus");
-        Spinner mSpinner = (Spinner) mview.findViewById(R.id.spinner_vaccine);
-        DatePicker mPicker = (DatePicker) mview.findViewById(R.id.datePicker_vaccine);
+        final Spinner mSpinner = (Spinner) mview.findViewById(R.id.spinner_vaccine);
+        final DatePicker mPicker = (DatePicker) mview.findViewById(R.id.datePicker_vaccine);
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(VaccinationActivity.this,
                 android.R.layout.simple_spinner_item, vaccines);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -67,8 +72,28 @@ public class VaccinationActivity extends AppCompatActivity{
         mDialogBuilder.setPositiveButton("Lisää", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //Tähän tallennus tietokantaan
-                dialogInterface.dismiss();
+                //Vaccine name from Spinner
+                String vaccineName = (String) mSpinner.getSelectedItem();
+
+                // date from datepicker
+                String year = String.valueOf(mPicker.getYear());
+                String month = String.valueOf(mPicker.getMonth() + 1 );
+                String day = String.valueOf(mPicker.getDayOfMonth());
+
+                if(mPicker.getMonth() < 9) {
+                    month = "0" + month;
+
+                }
+
+                if(mPicker.getDayOfMonth() < 10){
+                    day = "0" + day;
+                }
+
+                String dateGiven = year + "-" + month + "-" + day;
+                DbAdapter db = new DbAdapter(VaccinationActivity.this);
+                db.open();
+                db.addVaccination(childName, vaccineName, dateGiven);
+                db.close();
             }
         });
 
@@ -107,41 +132,65 @@ public class VaccinationActivity extends AppCompatActivity{
 
     }
 
+    public void getAllVaccinations(){
+        DbAdapter db = new DbAdapter(this);
+        db.open();
+        vaccineList = db.getAllVaccinations(childId);
+        vaccinations = db.getAllVaccinations(childId);
+
+        Log.d("Reading: ", "Reading all vaccinations..");
+
+        for (Vaccine vaccine : vaccinations) {
+            String log = "Name: " + vaccine.getName() + " ,Date: " + vaccine.getDate();
+            // Writing shops  to log
+            Log.d("Vaccinations: : ", log);
+        }
+        db.close();
+
+
+    }
+
 
     public void debugvaccineList(){
-        Vaccine vaccine = new Vaccine("hoplaa", "1.1.2017");
+        Vaccine vaccine = new Vaccine("MPR", "1.7.2014");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("Vesirokko", "1.1.2017");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("Rotavirus", "20.3.2016");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("PCV", "30.2.2015");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("DTaP-IPV-Hib", "15.7.2014");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("MPR", "26.4.2016");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("Influenssa", "29.10.2017");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("Vesirokko", "1.1.2017");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("Rotavirus", "20.3.2016");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("PCV", "30.2.2015");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("DTaP-IPV-Hib", "15.7.2014");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("MPR", "26.4.2016");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("Influenssa", "29.10.2017");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("Vesirokko", "1.1.2017");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("Rotavirus", "20.3.2016");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("PCV", "30.2.2015");
         vaccineList.add(vaccine);
-        vaccine = new Vaccine("hoplaa", "1.1.2017");
+        vaccine = new Vaccine("DTaP-IPV-Hib", "15.7.2014");
         vaccineList.add(vaccine);
+        vaccine = new Vaccine("MPR", "26.4.2016");
+        vaccineList.add(vaccine);
+        vaccine = new Vaccine("Influenssa", "29.10.2017");
+        vaccineList.add(vaccine);
+
     }
+
 }

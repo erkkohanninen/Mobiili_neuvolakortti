@@ -314,4 +314,27 @@ public class DbAdapter {
         return db.rawQuery("SELECT vaccine_name FROM " + TABLE_VACCINE , null);
     }
 
+    public List<Vaccine> getAllVaccinations(int childId){
+        List<Vaccine> listOfVaccinations = new ArrayList<Vaccine>();
+
+        Cursor cursor = db.rawQuery("SELECT vaccine_name, date_given FROM " + TABLE_VACCINE +
+                " tv, " + TABLE_VACCINATION + " tvv WHERE tvv." + KEY_CHILD_ID + " = '" + childId + "'" +
+                " AND tv." + KEY_ID + " = " + "tvv." + KEY_VACCINE_ID + " ORDER BY date_given DESC", null);
+        //looping through all rows and adding to list
+        if(cursor.moveToFirst()){
+            do{
+                Vaccine vaccination = new Vaccine();
+                vaccination.setName(cursor.getString(0));
+                vaccination.setDate(cursor.getString(1));
+
+
+                // Adding vaccination to list
+                listOfVaccinations.add(vaccination);
+            }while (cursor.moveToNext());
+        }
+
+        return listOfVaccinations;
+
+    }
+
 }
