@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".AddChildActivity" />
         <activity android:name=".ChildProfileActivity" />
-        <activity android:name=".VaccinationActivity"></activity>
+        <activity android:name=".VaccinationActivity" />
+        <activity android:name=".GrowthActivity"></activity>
     </application>
 
 </manifest>

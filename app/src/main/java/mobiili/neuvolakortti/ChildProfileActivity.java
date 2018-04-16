@@ -53,6 +53,11 @@ public class ChildProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goToGrowth(View view){
+        Intent intent = new Intent(this, GrowthActivity.class);
+        startActivity(intent);
+    }
+
 
 }
 

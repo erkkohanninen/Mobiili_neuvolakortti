@@ -83,8 +83,9 @@
                 android:id="@+id/measures_button"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:layout_weight="1"
                 android:layout_marginBottom="@dimen/margin_between"
+                android:layout_weight="1"
+                android:onClick="goToGrowth"
                 android:text="Kasvu"
                 android:textSize="10dp" />
 
