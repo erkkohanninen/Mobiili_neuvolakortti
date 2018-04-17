@@ -14,4 +14,8 @@
     <string name="add_vaccine">Valitse rokote:</string>
     <string name="add_date_given">Valitse päivämäärä:</string>
     <string name="add_vaccination">Lisää rokotus:</string>
+    <string name="add_weight">Paino (kg)</string>
+    <string name="add_height">Pituus (cm)</string>
+    <string name="add_head">Päänympärys (cm)</string>
+    <string name="add_growth">Lisää kasvutiedot:</string>
 </resources>

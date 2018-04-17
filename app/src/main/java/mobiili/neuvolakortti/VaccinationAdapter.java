@@ -33,7 +33,7 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
             super(view);
             vaccine_name = (TextView) view.findViewById(R.id.vaccine_name);
             date_given = (TextView) view.findViewById(R.id.date_given);
-            button_edit = (ImageButton)view.findViewById(R.id.button_edit);
+            //button_edit = (ImageButton)view.findViewById(R.id.button_edit);
             button_delete = (ImageButton)view.findViewById(R.id.button_delete);
 
         }
@@ -59,7 +59,7 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
         final Vaccine vaccine = vaccineList.get(position);
         holder.vaccine_name.setText(vaccine.getName());
         holder.date_given.setText(vaccine.getDate());
-        holder.button_edit.setImageResource(android.R.drawable.ic_menu_edit);
+        //holder.button_edit.setImageResource(android.R.drawable.ic_menu_edit);
         holder.button_delete.setImageResource(android.R.drawable.ic_menu_delete);
 
         holder.button_delete.setOnClickListener(new View.OnClickListener() {

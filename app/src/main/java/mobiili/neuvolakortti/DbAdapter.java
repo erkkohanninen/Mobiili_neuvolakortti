@@ -7,8 +7,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,9 +87,9 @@ public class DbAdapter {
             + TABLE_DEVELOPMENT_STEP + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CHILD_ID
             + " INTEGER NOT NULL," + KEY_DEVELOPMENTS_ID + " INTEGER NOT NULL," + KEY_DATE_REACHED + " DATE NOT NULL" + ")";
 
-    final Context context;
-    DatabaseHelper DBHelper;
-    SQLiteDatabase db;
+    private final Context context;
+    private DatabaseHelper DBHelper;
+    private SQLiteDatabase db;
 
     public DbAdapter(Context ctx){
         this.context = ctx;
@@ -240,6 +238,8 @@ public class DbAdapter {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
+
         // return contact list
         return listOfChildren;
     }
@@ -257,6 +257,7 @@ public class DbAdapter {
                 listOfDevelopments.add(cursor.getString(0));
             }while (cursor.moveToNext());
         }
+        cursor.close();
         return listOfDevelopments;
     }
 
@@ -301,8 +302,10 @@ public class DbAdapter {
             return id_fetched;
         }
         else {
+            cursor.close();
             return "notfound";
         }
+
 
     }
 
@@ -333,6 +336,7 @@ public class DbAdapter {
                 listOfVaccinations.add(vaccination);
             }while (cursor.moveToNext());
         }
+        cursor.close();
 
         return listOfVaccinations;
 
