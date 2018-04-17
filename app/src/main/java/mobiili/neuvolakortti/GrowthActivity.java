@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 
 public class GrowthActivity extends AppCompatActivity {
 
@@ -58,6 +59,9 @@ public class GrowthActivity extends AppCompatActivity {
         View mview = getLayoutInflater().inflate(R.layout.dialog_add_growth, null);
         mDialogBuilder.setTitle(R.string.add_growth);
         final DatePicker mPicker = (DatePicker) mview.findViewById(R.id.datePicker_vaccine);
+        final EditText etWeight = (EditText) mview.findViewById(R.id.dialog_add_weight);
+        final EditText etHeight = (EditText) mview.findViewById(R.id.dialog_add_height);
+        final EditText etHead = (EditText) mview.findViewById(R.id.dialog_add_head);
 
         // Actions when user presses positive button
         mDialogBuilder.setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {

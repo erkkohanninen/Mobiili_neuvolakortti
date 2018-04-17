@@ -9,6 +9,7 @@ public class Child {
     private int id;
     private String name;
     private String dateOfBirth;
+    private String dateMeasured;
     private float weight;
     private float height;
     private float head;
@@ -25,6 +26,14 @@ public class Child {
         this.weight = weight;
         this.height = height;
         this.head = head;
+    }
+
+    public Child(int id, float weight, float height, float head, String dateMeasured){
+        this.id = id;
+        this.weight = weight;
+        this.height = height;
+        this.head = head;
+        this.dateMeasured = dateMeasured;
     }
 
     public Child(String name, int id)
@@ -57,10 +66,9 @@ public class Child {
         this.head = head;
     }
 
-    public int getId() {
+    public void setDateMeasured(String dateMeasured){this.dateMeasured = dateMeasured;}
 
-        return id;
-    }
+    public int getId() {return id;}
 
     public String getName(){
         return name;
@@ -81,5 +89,7 @@ public class Child {
     public float getHead(){
         return head;
     }
+
+    public String getDateMeasured(){return dateMeasured;}
 
 }

@@ -43,14 +43,14 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
 
     // Returns to MainActivity without saving child info to database
 
-    void cancelAddChild(View view){
+    public void cancelAddChild(View view){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     // save child´s info to database and return to MainActivity
 
-    void saveAddChild(View view){
+    public void saveAddChild(View view){
         db.open();
         childName = etChildname.getText().toString();
         weight = etWeight.getText().toString();
