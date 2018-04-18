@@ -6,33 +6,47 @@
     android:orientation="vertical"
     android:padding="@dimen/margin_between">
 
-    <EditText
-        android:id="@+id/dialog_add_weight"
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/add_weight"
-        android:inputType="numberDecimal"/>
+        android:layout_height="match_parent"
+        android:stretchColumns="1"
+        android:padding="@dimen/margin_between">
 
-    <EditText
-        android:id="@+id/dialog_add_height"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/add_height"
-        android:inputType="numberDecimal"/>
+        <TableRow>
+            <TextView
+                android:text="@string/add_weight"/>
 
-    <EditText
-        android:id="@+id/dialog_add_head"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/add_head"
-        android:inputType="numberDecimal"/>
+            <EditText
+                android:id="@+id/dialog_add_weight"
+                android:inputType="numberDecimal"/>
+
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:text="@string/add_height"/>
+
+            <EditText
+                android:id="@+id/dialog_add_height"
+                android:inputType="numberDecimal"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView android:text="@string/add_head"/>
+            <EditText
+                android:id="@+id/dialog_add_head"
+                android:inputType="numberDecimal"/>
+
+        </TableRow>
+    </TableLayout>
 
 
     <DatePicker
         android:id="@+id/datePicker_vaccine"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
         android:spinnersShown="true"/>

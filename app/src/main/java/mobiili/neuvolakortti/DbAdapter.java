@@ -267,8 +267,10 @@ public class DbAdapter {
         Cursor cursor = db.query(TABLE_CHILD, null, KEY_CHILD_NAME + "=?", new String[]{childName},
                 null, null, null);
         if(cursor.getCount() > 0){
+            cursor.close();
             return false;
         }
+        cursor.close();
         return true;
 
     }
@@ -302,7 +304,6 @@ public class DbAdapter {
             return id_fetched;
         }
         else {
-            cursor.close();
             return "notfound";
         }
 
