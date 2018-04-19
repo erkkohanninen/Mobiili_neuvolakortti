@@ -58,6 +58,13 @@ public class ChildProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void goToDevelopment(View view){
+        Intent intent = new Intent(this, DevelopmentActivity.class);
+        intent.putExtra("NAME", childName);
+        intent.putExtra("ID", id);
+        startActivity(intent);
+    }
+
 
 }
 

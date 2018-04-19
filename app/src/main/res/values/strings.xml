@@ -18,4 +18,5 @@
     <string name="add_height">Pituus (cm)</string>
     <string name="add_head">Päänympärys (cm)</string>
     <string name="add_growth">Lisää kasvutiedot:</string>
+    <string name="add_development">Lisää kehitysaskel:</string>
 </resources>
