@@ -96,6 +96,7 @@
                 android:layout_height="70dp"
                 android:layout_weight="1"
                 android:text="Kehitys"
+                android:onClick="goToDevelopment"
                 android:layout_marginBottom="@dimen/margin_between"
                 android:textSize="10dp" />
 

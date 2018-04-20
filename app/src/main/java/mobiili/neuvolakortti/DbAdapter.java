@@ -246,8 +246,8 @@ public class DbAdapter {
 
     //-----Get all developments------
 
-    public List<String> getAllDevelopments(){
-        List<String> listOfDevelopments = new ArrayList<>();
+    public ArrayList<String> getAllDevelopments(){
+        ArrayList<String> listOfDevelopments = new ArrayList<>();
         //Selecet all -query
         String selectQuery = "SELECT " + KEY_DEVELOPMENT_NAME + " FROM " + TABLE_DEVELOPMENTS;
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -260,6 +260,72 @@ public class DbAdapter {
         cursor.close();
         return listOfDevelopments;
     }
+
+    //-----Adds new development to developments-table------
+
+    public void addDevelopment(Integer childId, String developmentName, String dateReached) {
+        String id_development = getDevelopmentId(developmentName);
+        if (id_development.equals("notfound")) {
+            Log.d(TAG, "notfound");
+        } else {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(KEY_CHILD_ID, childId);
+            contentValues.put(KEY_DEVELOPMENTS_ID, id_development);
+            contentValues.put(KEY_DATE_REACHED, dateReached);
+            db.insert(TABLE_DEVELOPMENT_STEP, null, contentValues);
+        }
+
+    }
+
+    //-----Gets development_id based on development name------
+
+    public String getDevelopmentId(String developmentName){
+        Cursor cursor = db.rawQuery("SELECT _id FROM developments WHERE development_name=?", new String[]{developmentName});
+        if(cursor != null){
+            cursor.moveToFirst();
+            String id_fetched = cursor.getString(0);
+            cursor.close();
+            return id_fetched;
+        }
+        else {
+            return "notfound";
+        }
+
+    }
+
+    //-----Returns all developments based on child id------
+
+    public List<Development> getAllChildDevelopments(int childId){
+        List<Development> listOfDevelopments = new ArrayList<Development>();
+
+        Cursor cursor = db.rawQuery("SELECT development_name, date_reached, tvv._id FROM " + TABLE_DEVELOPMENTS +
+                " tv, " + TABLE_DEVELOPMENT_STEP + " tvv WHERE tvv." + KEY_CHILD_ID + " = '" + childId + "'" +
+                " AND tv." + KEY_ID + " = " + "tvv." + KEY_DEVELOPMENTS_ID + " ORDER BY date_reached DESC", null);
+        //looping through all rows and adding to list
+        if(cursor.moveToFirst()){
+            do{
+                Development development = new Development();
+                development.setName(cursor.getString(0));
+                development.setDate(cursor.getString(1));
+                development.setId(cursor.getString(2));
+
+
+                // Adding development to list
+                listOfDevelopments.add(development);
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return listOfDevelopments;
+
+    }
+
+    public void deleteDevelopment(String id){
+
+        db.execSQL("DELETE FROM " + TABLE_DEVELOPMENT_STEP + " WHERE " + KEY_ID + " = '" + id + "';");
+    }
+
+
 
     //-----Checks if child already exist in database------
 
