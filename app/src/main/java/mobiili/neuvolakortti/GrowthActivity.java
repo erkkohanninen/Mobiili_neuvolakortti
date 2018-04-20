@@ -1,5 +1,6 @@
 package mobiili.neuvolakortti;
 
+import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -7,12 +8,20 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import java.util.List;
+
 public class GrowthActivity extends AppCompatActivity {
+    private String childWeight;
+    private String childHeight;
+    private String childHead;
+    private String dateToDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +80,43 @@ public class GrowthActivity extends AppCompatActivity {
 
                 //Tähän tekstit editteksteistä ja tallennus tietokantaan lapsen id:n perusteella
                 //Tarkistukset, ettei syötetty tyhjää?
-                dialogInterface.dismiss();
+                childWeight = etWeight.getText().toString();
+                childHeight = etHeight.getText().toString();
+                childHead = etHead.getText().toString();
+
+                if( TextUtils.isEmpty(childWeight)){
+                    childWeight = "0.0";
+                }
+                if (TextUtils.isEmpty(childHeight)){
+                    childHeight = "0.0";
+                }
+                if (TextUtils.isEmpty(childHead)){
+                    childHead = "0.0";
+                }
+
+                // date from datepicker
+                String year = String.valueOf(mPicker.getYear());
+                String month = String.valueOf(mPicker.getMonth() + 1 );
+                String day = String.valueOf(mPicker.getDayOfMonth());
+
+                if(mPicker.getMonth() < 9) {
+                    month = "0" + month;
+
+                }
+
+                if(mPicker.getDayOfMonth() < 10){
+                    day = "0" + day;
+                }
+
+                dateToDatabase = year + "-" + month + "-" + day;
+
+                DbAdapter db = new DbAdapter(GrowthActivity.this);
+                db.open();
+                db.addMeasures(new Child(1, Float.valueOf(childWeight),
+                        Float.valueOf(childHeight), Float.valueOf(childHead), dateToDatabase));
+                List<Child> childWeights = db.getWeights(1);
+                db.close();
+                //Log.d("MITAT:", childWeight + " " + childHeight + " " + childHead + " " + dateToDatabase);
 
             }
         });
@@ -90,4 +135,5 @@ public class GrowthActivity extends AppCompatActivity {
         dialog.show();
 
     }
+
 }

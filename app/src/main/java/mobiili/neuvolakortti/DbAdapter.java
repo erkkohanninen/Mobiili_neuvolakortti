@@ -348,5 +348,37 @@ public class DbAdapter {
         db.execSQL("DELETE FROM " + TABLE_VACCINATION + " WHERE " + KEY_ID + " = '" + id + "';");
     }
 
+    public void addMeasures(Child child){
+        ContentValues values = new ContentValues();
+        values.put(KEY_CHILD_ID, child.getId());
+        values.put(KEY_WEIGHT, child.getWeight());
+        values.put(KEY_HEIGHT, child.getHeight());
+        values.put(KEY_HEAD, child.getHead());
+        values.put(KEY_DATE_MEASURED, child.getDateMeasured());
+        db.insert(TABLE_MEASURES, null, values);
+
+    }
+
+    public List <Child> getWeights (int childId){
+        List<Child> listOfWeights = new ArrayList<Child>();
+
+        Cursor cursor = db.rawQuery("SELECT weight, date_measured FROM " + TABLE_MEASURES +
+                " WHERE " + KEY_CHILD_ID + " = '" + childId + "'" +
+                " AND " + KEY_WEIGHT + " IS NOT '0.0' ORDER BY date_measured DESC", null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                String weight = cursor.getString(0);
+                String date = cursor.getString(1);
+                Log.d("PAINO JA PAIVA", weight + " " + date);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return listOfWeights;
+
+    }
 }
 
