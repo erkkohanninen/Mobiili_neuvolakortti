@@ -425,26 +425,5 @@ public class DbAdapter {
 
     }
 
-    public List <Child> getWeights (int childId){
-        List<Child> listOfWeights = new ArrayList<Child>();
-
-        Cursor cursor = db.rawQuery("SELECT weight, date_measured FROM " + TABLE_MEASURES +
-                " WHERE " + KEY_CHILD_ID + " = '" + childId + "'" +
-                " AND " + KEY_WEIGHT + " IS NOT '0.0' ORDER BY date_measured DESC", null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                String weight = cursor.getString(0);
-                String date = cursor.getString(1);
-                Log.d("PAINO JA PAIVA", weight + " " + date);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-
-        return listOfWeights;
-
-    }
 }
 

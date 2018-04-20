@@ -78,8 +78,6 @@ public class GrowthActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                //Tähän tekstit editteksteistä ja tallennus tietokantaan lapsen id:n perusteella
-                //Tarkistukset, ettei syötetty tyhjää?
                 childWeight = etWeight.getText().toString();
                 childHeight = etHeight.getText().toString();
                 childHead = etHead.getText().toString();
@@ -112,9 +110,9 @@ public class GrowthActivity extends AppCompatActivity {
 
                 DbAdapter db = new DbAdapter(GrowthActivity.this);
                 db.open();
+                //LISÄÄ TÄHÄN OIKEA ID!!
                 db.addMeasures(new Child(1, Float.valueOf(childWeight),
                         Float.valueOf(childHeight), Float.valueOf(childHead), dateToDatabase));
-                List<Child> childWeights = db.getWeights(1);
                 db.close();
                 //Log.d("MITAT:", childWeight + " " + childHeight + " " + childHead + " " + dateToDatabase);
 
