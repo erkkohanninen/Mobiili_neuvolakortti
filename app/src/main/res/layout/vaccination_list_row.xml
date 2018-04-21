@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:paddingBottom="@dimen/row_padding_vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -13,9 +13,9 @@
 
     <TextView
         android:id="@+id/vaccine_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:textColor="@color/title"
         android:textSize="16dp"
         android:textStyle="bold" />
@@ -23,16 +23,16 @@
 
     <TextView
         android:id="@+id/date_given"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:textColor="@color/date"
-        android:layout_below="@id/vaccine_name" />
+        android:textColor="@color/date" />
 
 
     <ImageButton
         android:id="@+id/button_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" />
+        android:layout_width="0dp"
+        android:layout_weight="0.3"
+        android:layout_height="wrap_content" />
 
-</RelativeLayout>
+</LinearLayout>

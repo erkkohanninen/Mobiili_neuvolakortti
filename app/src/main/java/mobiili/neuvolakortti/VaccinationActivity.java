@@ -46,7 +46,7 @@ public class VaccinationActivity extends AppCompatActivity{
         // Populate recyclerview with child´s vaccinations
         getAllVaccinations();
         recyclerView = (RecyclerView) findViewById(R.id.rv_vaccination);
-        mAdapter = new VaccinationAdapter(vaccineList, dbb);
+        mAdapter = new VaccinationAdapter(vaccineList, dbb, childName);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

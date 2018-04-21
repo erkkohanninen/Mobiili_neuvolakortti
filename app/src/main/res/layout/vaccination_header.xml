@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:background="@color/date">
+
+
+    <TextView
+        android:id="@+id/header_title"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:text="Rokote"
+        android:textSize="@dimen/header_subtext"
+        android:textStyle="bold"
+        android:textColor="@color/header_text"
+        android:paddingLeft="@dimen/margin_between"/>
+
+    <TextView
+        android:id="@+id/header_date"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.3"
+        android:gravity="center_vertical"
+        android:text="Päivämäärä"
+        android:textSize="@dimen/header_subtext"
+        android:textStyle="bold"
+        android:textColor="@color/header_text"/>
+
+
+
+</LinearLayout>

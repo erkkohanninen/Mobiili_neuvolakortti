@@ -19,71 +19,120 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
 
     private List<Vaccine> vaccineList;
     private DbAdapter db;
-
-
+    private String childName;
+    private static final int TYPE_HEAD = 0;
+    private static final int TYPE_LIST = 1;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView vaccine_name;
         public TextView date_given;
-        public ImageButton button_edit;
+        public TextView childName;
+        public TextView headerTitle;
+        public TextView headerDate;
         public ImageButton button_delete;
+        int view_type;
 
-        public MyViewHolder(View view) {
+        public MyViewHolder(View view, int viewType) {
             super(view);
-            vaccine_name = (TextView) view.findViewById(R.id.vaccine_name);
-            date_given = (TextView) view.findViewById(R.id.date_given);
-            //button_edit = (ImageButton)view.findViewById(R.id.button_edit);
-            button_delete = (ImageButton)view.findViewById(R.id.button_delete);
+
+            if( viewType == TYPE_LIST)
+            {
+                vaccine_name = (TextView) view.findViewById(R.id.vaccine_name);
+                date_given = (TextView) view.findViewById(R.id.date_given);
+                button_delete = (ImageButton)view.findViewById(R.id.button_delete);
+                view_type = 1;
+            }
+
+            else if( viewType == TYPE_HEAD)
+            {
+                //childName = (TextView) view.findViewById(R.id.header_child_name);
+                headerTitle = (TextView)view.findViewById(R.id.header_title);
+                headerDate = (TextView)view.findViewById(R.id.header_date);
+                view_type = 0;
+            }
+
 
         }
     }
 
 
-    public VaccinationAdapter(List<Vaccine> vaccineList, DbAdapter db) {
+    public VaccinationAdapter(List<Vaccine> vaccineList, DbAdapter db, String childName) {
         this.vaccineList = vaccineList;
         this.db = db;
+        this.childName = childName;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.vaccination_list_row, parent, false);
+        View itemView;
 
-        return new MyViewHolder(itemView);
+        if(viewType == TYPE_LIST)
+        {
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.vaccination_list_row, parent, false);
+            return new MyViewHolder(itemView, viewType);
+        }
+
+        else if(viewType == TYPE_HEAD)
+        {
+            itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.vaccination_header, parent, false);
+            return new MyViewHolder(itemView, viewType);
+        }
+        return null;
+
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        final Vaccine vaccine = vaccineList.get(position);
-        holder.vaccine_name.setText(vaccine.getName());
-        holder.date_given.setText(vaccine.getDate());
-        //holder.button_edit.setImageResource(android.R.drawable.ic_menu_edit);
-        holder.button_delete.setImageResource(android.R.drawable.ic_menu_delete);
+        if(holder.view_type == TYPE_LIST)
+        {
+            Vaccine vaccine = vaccineList.get(position - 1);
+            holder.vaccine_name.setText(vaccine.getName());
+            holder.date_given.setText(vaccine.getDate());
+            holder.button_delete.setImageResource(android.R.drawable.ic_menu_delete);
 
-        holder.button_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String clickedVaccine = vaccineList.get(position).getName();
-                String clickedDate = vaccineList.get(position).getDate();
-                String id = vaccineList.get(position).getId();
-                Log.d("NIMI:", clickedVaccine);
-                Log.d("DATE", clickedDate);
-                Log.d("ID", id);
-                db.open();
-                db.deleteVaccination(id);
-                db.close();
-                vaccineList.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, getItemCount());
-            }
-        });
+            holder.button_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String clickedVaccine = vaccineList.get(position -1).getName();
+                    String clickedDate = vaccineList.get(position -1).getDate();
+                    String id = vaccineList.get(position -1).getId();
+                    Log.d("NIMI:", clickedVaccine);
+                    Log.d("DATE", clickedDate);
+                    Log.d("ID", id);
+                    db.open();
+                    db.deleteVaccination(id);
+                    db.close();
+                    vaccineList.remove(position - 1);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged((position - 1), getItemCount());
+                }
+            });
+
+        }
+
+        else if(holder.view_type == TYPE_HEAD)
+        {
+            //holder.childName.setText(childName);
+            holder.headerTitle.setText("Rokote");
+            holder.headerDate.setText("Päivämäärä");
+
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return vaccineList.size();
+        return vaccineList.size() + 1;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if ( position == 0)
+        {
+            return TYPE_HEAD;
+        }
+        return TYPE_LIST;
+    }
 }
