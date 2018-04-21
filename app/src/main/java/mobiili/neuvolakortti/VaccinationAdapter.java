@@ -19,7 +19,6 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
 
     private List<Vaccine> vaccineList;
     private DbAdapter db;
-    private String childName;
     private static final int TYPE_HEAD = 0;
     private static final int TYPE_LIST = 1;
 
@@ -27,7 +26,6 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView vaccine_name;
         public TextView date_given;
-        public TextView childName;
         public TextView headerTitle;
         public TextView headerDate;
         public ImageButton button_delete;
@@ -46,7 +44,6 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
 
             else if( viewType == TYPE_HEAD)
             {
-                //childName = (TextView) view.findViewById(R.id.header_child_name);
                 headerTitle = (TextView)view.findViewById(R.id.header_title);
                 headerDate = (TextView)view.findViewById(R.id.header_date);
                 view_type = 0;
@@ -57,10 +54,9 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
     }
 
 
-    public VaccinationAdapter(List<Vaccine> vaccineList, DbAdapter db, String childName) {
+    public VaccinationAdapter(List<Vaccine> vaccineList, DbAdapter db) {
         this.vaccineList = vaccineList;
         this.db = db;
-        this.childName = childName;
     }
 
     @Override
@@ -105,7 +101,7 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
                     db.deleteVaccination(id);
                     db.close();
                     vaccineList.remove(position - 1);
-                    notifyItemRemoved(position);
+                    notifyItemRemoved(position );
                     notifyItemRangeChanged((position - 1), getItemCount());
                 }
             });
@@ -114,9 +110,8 @@ public class VaccinationAdapter extends RecyclerView.Adapter<VaccinationAdapter.
 
         else if(holder.view_type == TYPE_HEAD)
         {
-            //holder.childName.setText(childName);
-            holder.headerTitle.setText("Rokote");
-            holder.headerDate.setText("Päivämäärä");
+            holder.headerTitle.setText(R.string.vaccine);
+            holder.headerDate.setText(R.string.date);
 
         }
 

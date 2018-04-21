@@ -3,6 +3,7 @@ package mobiili.neuvolakortti;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class VaccinationActivity extends AppCompatActivity{
     private String childName;
     private int childId;
     private DbAdapter dbb = new DbAdapter(this);
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +44,14 @@ public class VaccinationActivity extends AppCompatActivity{
             childName = extras.getString("NAME");
             childId = extras.getInt("ID");
         }
+        //change the text in actionbar
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Rokotukset - " + childName);
 
         // Populate recyclerview with child´s vaccinations
         getAllVaccinations();
         recyclerView = (RecyclerView) findViewById(R.id.rv_vaccination);
-        mAdapter = new VaccinationAdapter(vaccineList, dbb, childName);
+        mAdapter = new VaccinationAdapter(vaccineList, dbb);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

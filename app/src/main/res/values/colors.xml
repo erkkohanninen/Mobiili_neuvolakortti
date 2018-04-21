@@ -6,4 +6,5 @@
     <color name="date">#999999</color>
     <color name="title">#222222</color>
     <color name="header_text">#ffffff</color>
+    <color name="background">#E5E1E1</color>
 </resources>
