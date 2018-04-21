@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginRight="@dimen/activity_vertical_margin"
+    android:layout_marginLeft="@dimen/activity_vertical_margin"
     tools:context="mobiili.neuvolakortti.ChildProfileActivity">
 
 
@@ -59,14 +61,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2.0"
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:layout_width="match_parent"
+                    android:id="@+id/edit_profile_button"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/ic_menu_edit"/>
+                    app:srcCompat="@android:drawable/ic_menu_edit"
+                    android:onClick="editProfile"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -87,7 +91,7 @@
                 android:layout_weight="1"
                 android:onClick="goToGrowth"
                 android:text="Kasvu"
-                android:textSize="10dp" />
+                android:textSize="16dp" />
 
 
             <Button
@@ -98,7 +102,7 @@
                 android:text="Kehitys"
                 android:onClick="goToDevelopment"
                 android:layout_marginBottom="@dimen/margin_between"
-                android:textSize="10dp" />
+                android:textSize="16dp" />
 
             <Button
                 android:id="@+id/vacc_button"
@@ -107,7 +111,7 @@
                 android:layout_weight="1"
                 android:text="Rokotukset"
                 android:layout_marginBottom="@dimen/margin_between"
-                android:textSize="10dp"
+                android:textSize="16dp"
                 android:onClick="goToVaccination"/>
 
         </LinearLayout>

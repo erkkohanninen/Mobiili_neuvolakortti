@@ -33,7 +33,7 @@ public class DbAdapter {
 
     //Table child column names
     static final String KEY_CHILD_NAME = "child_name";
-    static final String KEY_DATE_OF_BIRTH = "date_of_birh";
+    static final String KEY_DATE_OF_BIRTH = "date_of_birth";
 
     //Table vaccine column name
 
@@ -216,6 +216,81 @@ public class DbAdapter {
     }
 
 
+    //-----updates child's name and date of birth------
+
+    public void updateChild(Integer childId, String newName, String newDate){
+
+        // adding values to put in table_child
+        ContentValues newValues = new ContentValues();
+
+        newValues.put(KEY_CHILD_NAME, newName);
+        newValues.put(KEY_DATE_OF_BIRTH, newDate);
+        String where = "_id=?";
+        String[] whereArgs = new String[] {String.valueOf(childId)};
+        db.update(TABLE_CHILD, newValues, where, whereArgs);
+    }
+
+    //-----updates child's birth measures------
+
+    public void updateChildMeasures(int childId, String newDate,
+                            float newWeight, float newHeight, float newHead){
+
+        // adding measures to put in table_measures
+        ContentValues newValuesM = new ContentValues();
+        newValuesM.put(KEY_DATE_MEASURED, newDate);
+        newValuesM.put(KEY_WEIGHT, newWeight);
+        newValuesM.put(KEY_HEIGHT, newHeight);
+        newValuesM.put(KEY_HEAD, newHead);
+
+        String whereM = "child_id=?";
+        String[] whereArgsM = new String[] {String.valueOf(childId)};
+        db.update(TABLE_MEASURES, newValuesM, whereM, whereArgsM);
+    }
+
+    //-----Get current child's name and age by ID------
+
+    public String getCurrentChild(Integer childId, Integer get) {
+
+        // get String from selected column by child's id
+        String data="";
+        String selectQuery =  "SELECT * FROM " + TABLE_CHILD + " WHERE " + KEY_ID + " = " + childId;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor != null && cursor.moveToFirst()){
+            cursor.moveToFirst();
+            data = cursor.getString(get);
+            cursor.close();
+            return data;
+        }
+        else {
+            cursor.close();
+            return "notfound";
+        }
+    }
+
+    //-----Get current child's data by ID------
+
+    public String getCurrentChildData(Integer childId, Integer get) {
+
+        // get String from selected column by child's id
+        String data="";
+        String selectQuery =  "SELECT * FROM " + TABLE_MEASURES + " WHERE " + KEY_CHILD_ID + " = " + childId;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor != null && cursor.moveToFirst()){
+            cursor.moveToFirst();
+            data = cursor.getString(get);
+            cursor.close();
+            return data;
+        }
+        else {
+            cursor.close();
+            return "notfound";
+        }
+    }
+
+
+
     //-----Get all children------
 
     public List<Child> getAllChildren() {
@@ -243,6 +318,7 @@ public class DbAdapter {
         // return contact list
         return listOfChildren;
     }
+
 
     //-----Get all developments------
 

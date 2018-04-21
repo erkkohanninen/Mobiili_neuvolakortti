@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -18,21 +23,55 @@ import java.util.List;
  * */
 public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder> {
     public List<Child> myValues;
+    Context context;
     public ChildAdapter (List<Child> myValues){
         this.myValues= myValues;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        context = parent.getContext();
         View listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.child_list_item, parent, false);
         return new MyViewHolder(listItem);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.currentChild = myValues.get(position);
         holder.nameTextView.setText(holder.currentChild.getName());
         holder.ageTextView.setText(calcAge(holder.currentChild.getDateOfBirth()));
+
+        final Button button = holder.buttonOptions;
+
+        holder.buttonOptions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popup = new PopupMenu(context, button);
+
+                popup.inflate(R.menu.child_options_menu);
+
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        int id = holder.currentChild.getId();
+                        switch (item.getItemId()) {
+                            case R.id.edit_profile:
+                                Intent intent = new Intent(context, EditChildProfileActivity.class);
+                                intent.putExtra("ID", id);
+                                context.startActivity(intent);
+                              return true;
+                            case R.id.delete_profile:
+                                //int pos = holder.getAdapterPosition();
+                                //myValues.remove(pos);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
+
+                popup.show();
+            }
+        });
     }
 
 
@@ -46,6 +85,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder
         private TextView ageTextView;
         public View view;
         public Child currentChild;
+        public Button buttonOptions;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
@@ -54,20 +94,15 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String currentChildName = (currentChild.getName());
-                    String currentChildAge = calcAge((currentChild.getDateOfBirth()));
-                    int currentChildId = (currentChild.getId());
                     Context context = v.getContext();
                     Intent intent = new Intent(context, ChildProfileActivity.class);
-                    // sending current child's name, age and id to ChildProfileActivity
-                    intent.putExtra("NAME", currentChildName);
-                    intent.putExtra("AGE", currentChildAge);
-                    intent.putExtra("ID", currentChildId);
+                    intent.putExtra("ID", currentChild.getId());
                     context.startActivity(intent);
                 }
             });
             nameTextView = itemView.findViewById(R.id.tv_child_name);
             ageTextView = itemView.findViewById(R.id.tv_child_age);
+            buttonOptions = itemView.findViewById(R.id.tv_options_button);
         }
     }
 
