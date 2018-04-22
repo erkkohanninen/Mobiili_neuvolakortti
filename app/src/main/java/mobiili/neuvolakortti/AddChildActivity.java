@@ -38,7 +38,6 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
         etWeight = (EditText)findViewById(R.id.et_ac_weight);
         etHeight = (EditText)findViewById(R.id.et_ac_height);
         etHead = (EditText)findViewById(R.id.et_ac_head);
-        db = new DbAdapter(this);
     }
 
     // Returns to MainActivity without saving child info to database
@@ -70,27 +69,6 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
             db.addChild(new Child(childName, dateToDatabase, Float.valueOf(weight),
                     Float.valueOf(height), Float.valueOf(head)));
             Toast.makeText(this, "Lapsen tiedot lisätty", Toast.LENGTH_LONG).show();
-
-             /**
-             * DEBUGGAUS VARTEN LAPSIOLIOIDEN JA KEHITYSASKEL-LISTAN LÄPIKÄYNTI
-             */
-            Log.d("Reading: ", "Reading all children..");
-            List<Child> children = db.getAllChildren();
-
-            for (Child child : children) {
-                String log = "Id: " + child.getId() + " ,Name: " + child.getName() + " ,Date of birth: " + child.getDateOfBirth();
-                // Writing shops  to log
-                Log.d("Children: : ", log);
-            }
-
-
-            List<String> developments = db.getAllDevelopments();
-
-            for (String development : developments){
-                String log = "Development: " + development;
-                Log.d("Developments: ", log);
-            }
-
             db.close();
 
             Intent intent = new Intent(this, MainActivity.class);

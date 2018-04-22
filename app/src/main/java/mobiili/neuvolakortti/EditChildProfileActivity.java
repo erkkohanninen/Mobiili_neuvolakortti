@@ -110,7 +110,10 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
                 db.updateChild(id, newName, newDateToDB);
             }
             // update current child's birth measures
-            db.updateChildMeasures(id, newDateToDB, Float.valueOf(newHeight), Float.valueOf(newHeight), Float.valueOf(newHead));
+            newWeight = Float.valueOf(weight);
+            newHeight = Float.valueOf(height);
+            newHead = Float.valueOf(head);
+            db.updateChildMeasures(id, newDateToDB, newWeight, newHeight, newHead);
 
             Toast.makeText(this, "Uudet tiedot tallennettu", Toast.LENGTH_LONG).show();
 

@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         db = new DbAdapter(this);
         db.open();
         List<Child> children = db.getAllChildren(); //All childeren to list
+        db.close();
 
         // RecyclerView
         mChildrenList = findViewById(R.id.rv_children);
@@ -40,5 +41,31 @@ public class MainActivity extends AppCompatActivity {
     void goToAddChild(View view){
         Intent intent = new Intent(this, AddChildActivity.class);
         startActivity(intent);
+    }
+
+    // for refreshing the activity
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // RecyclerView
+        ChildAdapter mAdapter;
+        RecyclerView mChildrenList;
+
+        //Database
+        DbAdapter db;
+        db = new DbAdapter(this);
+        db.open();
+        List<Child> children = db.getAllChildren(); //All childeren to list
+        db.close();
+
+        // RecyclerView
+        mChildrenList = findViewById(R.id.rv_children);
+        mAdapter = new ChildAdapter(children);
+        mChildrenList.setAdapter(mAdapter);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        mChildrenList.setLayoutManager(llm);
+
     }
 }
