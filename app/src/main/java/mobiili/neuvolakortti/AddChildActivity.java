@@ -26,7 +26,7 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
     private String weight = "";
     private String height = "";
     private String head ="";
-    private DbAdapter db;
+    private DbAdapter db = new DbAdapter(this);
 
 
 
