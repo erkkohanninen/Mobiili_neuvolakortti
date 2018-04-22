@@ -33,6 +33,10 @@ public class GrowthActivity extends AppCompatActivity {
 
         HeightFragment heightFragment = new HeightFragment();
         fragmentTransaction.add(R.id.fragment_frame, heightFragment);
+
+        HeightFragmentChart heightFragmentChart = new HeightFragmentChart();
+        fragmentTransaction.add(R.id.fragment_frame_height,heightFragmentChart);
+
         fragmentTransaction.commit();
     }
 
@@ -61,6 +65,74 @@ public class GrowthActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment_frame, newFragment);
         fragmentTransaction.commit();
     }
+
+    public void changeFragmentHeight (View view){
+
+        Fragment newFragment;
+
+        if (view == view.findViewById(R.id.buttonToHeightList)){
+
+            newFragment = new HeightFragmentList();
+
+        }   else if (view == view.findViewById(R.id.buttonToHeightChart)){
+
+            newFragment = new HeightFragmentChart();
+
+        }   else {
+
+            newFragment = new HeightFragmentChart();
+        }
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame_height, newFragment);
+        fragmentTransaction.commit();
+    }
+
+    public void changeFragmentWeight (View view){
+
+        Fragment newFragment;
+
+        if (view == view.findViewById(R.id.buttonToWeightList)){
+
+            newFragment = new WeightFragmentList();
+
+        }   else if (view == view.findViewById(R.id.buttonToWeightChart)){
+
+            newFragment = new WeightFragmentChart();
+
+        }   else {
+
+            newFragment = new WeightFragmentChart();
+        }
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame_weight, newFragment);
+        fragmentTransaction.commit();
+    }
+
+    public void changeFragmentHead (View view){
+
+        Fragment newFragment;
+
+        if (view == view.findViewById(R.id.buttonToHeadList)){
+
+            newFragment = new HeadFragmentList();
+
+        }   else if (view == view.findViewById(R.id.buttonToHeadChart)){
+
+            newFragment = new HeadFragmentChart();
+
+        }   else {
+
+            newFragment = new HeadFragmentChart();
+        }
+
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_frame_head, newFragment);
+        fragmentTransaction.commit();
+    }
+
+
 
     public void addGrowth(View view){
 
