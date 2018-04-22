@@ -58,7 +58,7 @@ public class DbAdapter {
     static final String KEY_DATE_REACHED = "date_reached";
 
 
-    static final int DATABASE_VERSION = 11;
+    static final int DATABASE_VERSION = 12;
     static final String TAG = "DBUserAdapter";
 
 
