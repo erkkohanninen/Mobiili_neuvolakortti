@@ -64,6 +64,8 @@ public class ChildProfileActivity extends AppCompatActivity {
 
     public void goToGrowth(View view){
         Intent intent = new Intent(this, GrowthActivity.class);
+        intent.putExtra("NAME", childName);
+        intent.putExtra("ID", id);
         startActivity(intent);
     }
 

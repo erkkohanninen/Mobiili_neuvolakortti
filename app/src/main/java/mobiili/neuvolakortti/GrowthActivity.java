@@ -1,15 +1,14 @@
 package mobiili.neuvolakortti;
 
-import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -21,6 +20,9 @@ public class GrowthActivity extends AppCompatActivity {
     private String childHeight;
     private String childHead;
     private String dateToDatabase;
+    private String childName;
+    private int childId;
+    private ActionBar actionBar;
 
 
     @Override
@@ -28,16 +30,28 @@ public class GrowthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_growth);
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null){
+            childName = extras.getString("NAME");
+            childId = extras.getInt("ID");
+        }
+
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Kasvutiedot - " + childName);
+
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         HeightFragment heightFragment = new HeightFragment();
+        heightFragment.setArguments(getIntent().getExtras());
         fragmentTransaction.add(R.id.fragment_frame, heightFragment);
 
         HeightFragmentChart heightFragmentChart = new HeightFragmentChart();
+        heightFragmentChart.setArguments(getIntent().getExtras());
         fragmentTransaction.add(R.id.fragment_frame_height,heightFragmentChart);
 
         fragmentTransaction.commit();
+
     }
 
     public void changeFragment (View view){
@@ -82,6 +96,8 @@ public class GrowthActivity extends AppCompatActivity {
 
             newFragment = new HeightFragmentChart();
         }
+
+        newFragment.setArguments(getIntent().getExtras());
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame_height, newFragment);
@@ -204,6 +220,14 @@ public class GrowthActivity extends AppCompatActivity {
         AlertDialog dialog = mDialogBuilder.create();
         dialog.show();
 
+    }
+
+    public List getChildHeights(View view){
+        DbAdapter dbAdapter = new DbAdapter(this);
+        dbAdapter.open();
+        List heightList = (List) dbAdapter.getHeights(childId);
+        dbAdapter.close();
+        return heightList;
     }
 
 }
