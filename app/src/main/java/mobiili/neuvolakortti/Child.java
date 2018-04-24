@@ -1,5 +1,11 @@
 package mobiili.neuvolakortti;
 
+import android.content.Context;
+import android.content.ContextWrapper;
+import android.net.Uri;
+
+import java.io.File;
+
 /**
  * Created by tanja on 01/04/2018.
  */
@@ -10,6 +16,7 @@ public class Child {
     private String name;
     private String dateOfBirth;
     private String dateMeasured;
+    private String photo;
     private float weight;
     private float height;
     private float head;
@@ -18,11 +25,12 @@ public class Child {
     {
     }
 
-    public Child(String name, String dateOfBirth, float weight,
+    public Child(String name, String dateOfBirth, String photo, float weight,
                  float height, float head)
     {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
+        this.photo = photo;
         this.weight = weight;
         this.height = height;
         this.head = head;
@@ -93,4 +101,11 @@ public class Child {
 
     public String getDateMeasured(){return dateMeasured;}
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 }

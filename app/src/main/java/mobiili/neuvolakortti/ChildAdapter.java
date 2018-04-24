@@ -1,7 +1,9 @@
 package mobiili.neuvolakortti;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,10 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +44,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder
         holder.currentChild = myValues.get(position);
         holder.nameTextView.setText(holder.currentChild.getName());
         holder.ageTextView.setText(calcAge(holder.currentChild.getDateOfBirth()));
+        holder.imageView.setImageURI(getChildPhotoUri(holder.currentChild.getPhoto(), context));
 
         final Button button = holder.buttonOptions;
 
@@ -86,6 +91,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder
         public View view;
         public Child currentChild;
         public Button buttonOptions;
+        private ImageView imageView;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
@@ -103,6 +109,7 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder
             nameTextView = itemView.findViewById(R.id.tv_child_name);
             ageTextView = itemView.findViewById(R.id.tv_child_age);
             buttonOptions = itemView.findViewById(R.id.tv_options_button);
+            imageView = itemView.findViewById(R.id.photo);
         }
     }
 
@@ -131,6 +138,16 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder
         String age = ageYear +"v, " + ageMonth +"kk, " +ageDays + "pv";
 
         return age;
+    }
+
+    public Uri getChildPhotoUri(String photo, Context context) {
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File file = new File(directory, photo + ".jpg");
+        Uri outputUri = Uri.fromFile(file);
+        Log.d("TAG", outputUri.toString());
+
+        return outputUri;
     }
 
 }

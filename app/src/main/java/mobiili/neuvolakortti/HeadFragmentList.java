@@ -8,9 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class HeadFragmentList extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_head_list,container,false);
+        View v = inflater.inflate(R.layout.fragment_head_list,container,false);
+
+        return v;
     }
+
 }

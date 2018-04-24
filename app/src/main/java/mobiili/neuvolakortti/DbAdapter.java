@@ -1,11 +1,14 @@
 package mobiili.neuvolakortti;
 
+import android.annotation.TargetApi;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.util.Measure;
+import android.os.Build;
 import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,7 @@ public class DbAdapter {
     //Table child column names
     static final String KEY_CHILD_NAME = "child_name";
     static final String KEY_DATE_OF_BIRTH = "date_of_birth";
+    static final String KEY_CHILD_PHOTO = "child_photo";
 
     //Table vaccine column name
 
@@ -58,13 +62,14 @@ public class DbAdapter {
     static final String KEY_DATE_REACHED = "date_reached";
 
 
-    static final int DATABASE_VERSION = 12;
+    static final int DATABASE_VERSION = 13;
     static final String TAG = "DBUserAdapter";
 
 
     private static final String CREATE_TABLE_CHILD = "CREATE TABLE "
             + TABLE_CHILD + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CHILD_NAME
-            + " TEXT NOT NULL," + KEY_DATE_OF_BIRTH + " DATE NOT NULL " + ")";
+            + " TEXT NOT NULL," + KEY_DATE_OF_BIRTH + " DATE NOT NULL," + KEY_CHILD_PHOTO
+            + " TEXT NOT NULL "  + ")";
 
     private static final String CREATE_TABLE_VACCINE = "CREATE TABLE "
             + TABLE_VACCINE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -91,22 +96,22 @@ public class DbAdapter {
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
 
-    public DbAdapter(Context ctx){
+    public DbAdapter(Context ctx) {
         this.context = ctx;
         DBHelper = new DatabaseHelper(context);
     }
 
 
-    private static class DatabaseHelper extends SQLiteOpenHelper{
+    private static class DatabaseHelper extends SQLiteOpenHelper {
 
 
-        DatabaseHelper(Context context){
+        DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         @Override
-        public void onCreate(SQLiteDatabase db){
-            try{
+        public void onCreate(SQLiteDatabase db) {
+            try {
                 db.execSQL(CREATE_TABLE_CHILD);
                 db.execSQL(CREATE_TABLE_VACCINE);
                 db.execSQL(CREATE_TABLE_VACCINATION);
@@ -123,7 +128,6 @@ public class DbAdapter {
                 db.execSQL("INSERT INTO 'vaccine' ('vaccine_name') VALUES ('DTaP-IPV-Hib')");
                 db.execSQL("INSERT INTO 'vaccine' ('vaccine_name') VALUES ('MPR')");
                 db.execSQL("INSERT INTO 'vaccine' ('vaccine_name') VALUES ('Influenssa')");
-
 
 
                 //Insert developments to table_developments
@@ -144,14 +148,13 @@ public class DbAdapter {
                 db.execSQL("INSERT INTO 'developments' ('development_name') VALUES ('Nauraa')");
 
 
-
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHILD);
@@ -165,7 +168,7 @@ public class DbAdapter {
     }
 
     //----opens the database---
-    public DbAdapter open() throws SQLException{
+    public DbAdapter open() throws SQLException {
 
         db = DBHelper.getWritableDatabase();
         return this;
@@ -173,19 +176,20 @@ public class DbAdapter {
 
     //---closes the database----
 
-    public void close(){
+    public void close() {
 
         DBHelper.close();
     }
 
     //-----inserts a child------
 
-    public void addChild(Child child){
+    public void addChild(Child child) {
 
         //add values in order to put in table_child
         ContentValues values = new ContentValues();
         values.put(KEY_CHILD_NAME, child.getName());
         values.put(KEY_DATE_OF_BIRTH, child.getDateOfBirth());
+        values.put(KEY_CHILD_PHOTO, child.getPhoto());
 
         // insert Row to table_child
         db.insert(TABLE_CHILD, null, values);
@@ -194,7 +198,7 @@ public class DbAdapter {
         String getChildId = "SELECT " + KEY_ID + " FROM " + TABLE_CHILD + " WHERE " + KEY_CHILD_NAME + " = '" + child.getName() + "'";
 
         Cursor cursor = db.rawQuery(getChildId, null);
-        if(cursor != null){
+        if (cursor != null) {
             cursor.moveToFirst();
             String child_id_fetched = cursor.getString(0);
             cursor.close();
@@ -209,16 +213,15 @@ public class DbAdapter {
             values1.put(KEY_DATE_MEASURED, child.getDateOfBirth());
             //insert row to table_measures
             db.insert(TABLE_MEASURES, null, values1);
-        }
-        else {
-            Log.d(TAG,"notfound");
+        } else {
+            Log.d(TAG, "notfound");
         }
     }
 
 
     //-----updates child's name and date of birth------
 
-    public void updateChild(Integer childId, String newName, String newDate){
+    public void updateChild(Integer childId, String newName, String newDate) {
 
         // adding values to put in table_child
         ContentValues newValues = new ContentValues();
@@ -226,14 +229,14 @@ public class DbAdapter {
         newValues.put(KEY_CHILD_NAME, newName);
         newValues.put(KEY_DATE_OF_BIRTH, newDate);
         String where = "_id=?";
-        String[] whereArgs = new String[] {String.valueOf(childId)};
+        String[] whereArgs = new String[]{String.valueOf(childId)};
         db.update(TABLE_CHILD, newValues, where, whereArgs);
     }
 
     //-----updates child's birth measures------
 
     public void updateChildMeasures(int childId, String newDate,
-                            float newWeight, float newHeight, float newHead){
+                                    float newWeight, float newHeight, float newHead) {
 
         // adding measures to put in table_measures
         ContentValues newValuesM = new ContentValues();
@@ -243,7 +246,7 @@ public class DbAdapter {
         newValuesM.put(KEY_HEAD, newHead);
 
         String whereM = "child_id=?";
-        String[] whereArgsM = new String[] {String.valueOf(childId)};
+        String[] whereArgsM = new String[]{String.valueOf(childId)};
         db.update(TABLE_MEASURES, newValuesM, whereM, whereArgsM);
     }
 
@@ -252,17 +255,16 @@ public class DbAdapter {
     public String getCurrentChild(Integer childId, Integer get) {
 
         // get String from selected column by child's id
-        String data="";
-        String selectQuery =  "SELECT * FROM " + TABLE_CHILD + " WHERE " + KEY_ID + " = " + childId;
+        String data = "";
+        String selectQuery = "SELECT * FROM " + TABLE_CHILD + " WHERE " + KEY_ID + " = " + childId;
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if(cursor != null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             cursor.moveToFirst();
             data = cursor.getString(get);
             cursor.close();
             return data;
-        }
-        else {
+        } else {
             cursor.close();
             return "notfound";
         }
@@ -273,22 +275,20 @@ public class DbAdapter {
     public String getCurrentChildData(Integer childId, Integer get) {
 
         // get String from selected column by child's id
-        String data="";
-        String selectQuery =  "SELECT * FROM " + TABLE_MEASURES + " WHERE " + KEY_CHILD_ID + " = " + childId;
+        String data = "";
+        String selectQuery = "SELECT * FROM " + TABLE_MEASURES + " WHERE " + KEY_CHILD_ID + " = " + childId;
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if(cursor != null && cursor.moveToFirst()){
+        if (cursor != null && cursor.moveToFirst()) {
             cursor.moveToFirst();
             data = cursor.getString(get);
             cursor.close();
             return data;
-        }
-        else {
+        } else {
             cursor.close();
             return "notfound";
         }
     }
-
 
 
     //-----Get all children------
@@ -307,6 +307,7 @@ public class DbAdapter {
                 child.setId(Integer.parseInt(cursor.getString(0)));
                 child.setName(cursor.getString(1));
                 child.setDateOfBirth(cursor.getString(2));
+                child.setPhoto(cursor.getString(3));
 
                 // Adding child to list
                 listOfChildren.add(child);
@@ -322,16 +323,16 @@ public class DbAdapter {
 
     //-----Get all developments------
 
-    public ArrayList<String> getAllDevelopments(){
+    public ArrayList<String> getAllDevelopments() {
         ArrayList<String> listOfDevelopments = new ArrayList<>();
         //Selecet all -query
         String selectQuery = "SELECT " + KEY_DEVELOPMENT_NAME + " FROM " + TABLE_DEVELOPMENTS;
         Cursor cursor = db.rawQuery(selectQuery, null);
         //looping through all rows and adding to list
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 listOfDevelopments.add(cursor.getString(0));
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
         return listOfDevelopments;
@@ -355,15 +356,14 @@ public class DbAdapter {
 
     //-----Gets development_id based on development name------
 
-    public String getDevelopmentId(String developmentName){
+    public String getDevelopmentId(String developmentName) {
         Cursor cursor = db.rawQuery("SELECT _id FROM developments WHERE development_name=?", new String[]{developmentName});
-        if(cursor != null){
+        if (cursor != null) {
             cursor.moveToFirst();
             String id_fetched = cursor.getString(0);
             cursor.close();
             return id_fetched;
-        }
-        else {
+        } else {
             return "notfound";
         }
 
@@ -371,15 +371,15 @@ public class DbAdapter {
 
     //-----Returns all developments based on child id------
 
-    public List<Development> getAllChildDevelopments(int childId){
+    public List<Development> getAllChildDevelopments(int childId) {
         List<Development> listOfDevelopments = new ArrayList<Development>();
 
         Cursor cursor = db.rawQuery("SELECT development_name, date_reached, tvv._id FROM " + TABLE_DEVELOPMENTS +
                 " tv, " + TABLE_DEVELOPMENT_STEP + " tvv WHERE tvv." + KEY_CHILD_ID + " = '" + childId + "'" +
                 " AND tv." + KEY_ID + " = " + "tvv." + KEY_DEVELOPMENTS_ID + " ORDER BY date_reached DESC", null);
         //looping through all rows and adding to list
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 Development development = new Development();
                 development.setName(cursor.getString(0));
                 development.setDate(cursor.getString(1));
@@ -388,7 +388,7 @@ public class DbAdapter {
 
                 // Adding development to list
                 listOfDevelopments.add(development);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 
@@ -396,19 +396,18 @@ public class DbAdapter {
 
     }
 
-    public void deleteDevelopment(String id){
+    public void deleteDevelopment(String id) {
 
         db.execSQL("DELETE FROM " + TABLE_DEVELOPMENT_STEP + " WHERE " + KEY_ID + " = '" + id + "';");
     }
 
 
-
     //-----Checks if child already exist in database------
 
-    public boolean checkIfExists(String childName){
+    public boolean checkIfExists(String childName) {
         Cursor cursor = db.query(TABLE_CHILD, null, KEY_CHILD_NAME + "=?", new String[]{childName},
                 null, null, null);
-        if(cursor.getCount() > 0){
+        if (cursor.getCount() > 0) {
             cursor.close();
             return false;
         }
@@ -419,12 +418,11 @@ public class DbAdapter {
 
     //-----Adds new vaccination to vaccinations-table------
 
-    public void addVaccination(Integer childId, String vaccineName, String dateGiven){
+    public void addVaccination(Integer childId, String vaccineName, String dateGiven) {
         String id_vaccine = getVaccineId(vaccineName);
-        if(id_vaccine.equals("notfound")){
-            Log.d(TAG,"notfound");
-        }
-        else {
+        if (id_vaccine.equals("notfound")) {
+            Log.d(TAG, "notfound");
+        } else {
             ContentValues contentValues = new ContentValues();
             contentValues.put(KEY_CHILD_ID, childId);
             contentValues.put(KEY_VACCINE_ID, id_vaccine);
@@ -437,15 +435,14 @@ public class DbAdapter {
 
     //-----Gets vaccine_id based on vaccine name------
 
-    public String getVaccineId(String vaccineName){
+    public String getVaccineId(String vaccineName) {
         Cursor cursor = db.rawQuery("SELECT _id FROM vaccine WHERE vaccine_name=?", new String[]{vaccineName});
-        if(cursor != null){
+        if (cursor != null) {
             cursor.moveToFirst();
             String id_fetched = cursor.getString(0);
             cursor.close();
             return id_fetched;
-        }
-        else {
+        } else {
             return "notfound";
         }
 
@@ -454,21 +451,21 @@ public class DbAdapter {
 
     //-----Returns all vaccines ------
 
-    public Cursor getAllVaccines(){
-        return db.rawQuery("SELECT vaccine_name FROM " + TABLE_VACCINE , null);
+    public Cursor getAllVaccines() {
+        return db.rawQuery("SELECT vaccine_name FROM " + TABLE_VACCINE, null);
     }
 
     //-----Returns all vaccinations based on child id------
 
-    public List<Vaccine> getAllVaccinations(int childId){
+    public List<Vaccine> getAllVaccinations(int childId) {
         List<Vaccine> listOfVaccinations = new ArrayList<Vaccine>();
 
         Cursor cursor = db.rawQuery("SELECT vaccine_name, date_given, tvv._id FROM " + TABLE_VACCINE +
                 " tv, " + TABLE_VACCINATION + " tvv WHERE tvv." + KEY_CHILD_ID + " = '" + childId + "'" +
                 " AND tv." + KEY_ID + " = " + "tvv." + KEY_VACCINE_ID + " ORDER BY date_given DESC", null);
         //looping through all rows and adding to list
-        if(cursor.moveToFirst()){
-            do{
+        if (cursor.moveToFirst()) {
+            do {
                 Vaccine vaccination = new Vaccine();
                 vaccination.setName(cursor.getString(0));
                 vaccination.setDate(cursor.getString(1));
@@ -477,7 +474,7 @@ public class DbAdapter {
 
                 // Adding vaccination to list
                 listOfVaccinations.add(vaccination);
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 
@@ -485,12 +482,12 @@ public class DbAdapter {
 
     }
 
-    public void deleteVaccination(String id){
+    public void deleteVaccination(String id) {
 
         db.execSQL("DELETE FROM " + TABLE_VACCINATION + " WHERE " + KEY_ID + " = '" + id + "';");
     }
 
-    public void addMeasures(Child child){
+    public void addMeasures(Child child) {
         ContentValues values = new ContentValues();
         values.put(KEY_CHILD_ID, child.getId());
         values.put(KEY_WEIGHT, child.getWeight());
@@ -501,5 +498,31 @@ public class DbAdapter {
 
     }
 
+    public List<Child> getHeights(int childId) {
+        List<Child> listOfHeights = new ArrayList<Child>();
+
+        String selectQuery = "SELECT height, date_measured, tvv._id FROM " + TABLE_MEASURES + " tvv WHERE tvv." + KEY_CHILD_ID + " = '" + childId + "'";
+
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Child height = new Child();
+                height.setHeight(cursor.getFloat(0));
+                height.setDateMeasured(cursor.getString(1));
+                height.setId(cursor.getInt(2));
+
+                listOfHeights.add(height);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return listOfHeights;
+
+    }
 }
+
+
 

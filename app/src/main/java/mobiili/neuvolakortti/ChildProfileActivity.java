@@ -1,15 +1,20 @@
 package mobiili.neuvolakortti;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -19,8 +24,10 @@ public class ChildProfileActivity extends AppCompatActivity {
     private TextView nameTextView;
     private TextView ageTextView;
     private ImageButton editButton;
+    private ImageView imageView;
     private String childName;
     private String childAge;
+    private String childPhoto;
     private Integer id;
     private String dateToDatabase = "";
     private DbAdapter db = new DbAdapter(this);
@@ -37,6 +44,7 @@ public class ChildProfileActivity extends AppCompatActivity {
         editButton = (ImageButton) findViewById(R.id.edit_profile_button);
         nameTextView = (TextView) findViewById(R.id.tv_profile_name);
         ageTextView = (TextView) findViewById(R.id.tv_profile_age);
+        imageView = findViewById(R.id.photo);
 
         onResume();
     }
@@ -64,6 +72,8 @@ public class ChildProfileActivity extends AppCompatActivity {
 
     public void goToGrowth(View view){
         Intent intent = new Intent(this, GrowthActivity.class);
+        intent.putExtra("NAME", childName);
+        intent.putExtra("ID", id);
         startActivity(intent);
     }
 
@@ -118,6 +128,7 @@ public class ChildProfileActivity extends AppCompatActivity {
 
         childName = db.getCurrentChild(id, 1);
         childAge = db.getCurrentChild(id, 2);
+        childPhoto = db.getCurrentChild(id, 3);
 
         //change the text in actionbar
         actionBar = getSupportActionBar();
@@ -133,6 +144,17 @@ public class ChildProfileActivity extends AppCompatActivity {
         }
 
         db.close();
+        imageView.setImageURI(getChildPhotoUri(childPhoto, getApplicationContext()));
+    }
+
+    public Uri getChildPhotoUri(String photo, Context context) {
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File file = new File(directory, photo + ".jpg");
+        Uri outputUri = Uri.fromFile(file);
+        Log.d("TAG", outputUri.toString());
+
+        return outputUri;
     }
 }
 
