@@ -37,6 +37,7 @@ public class DbAdapter {
     //Table child column names
     static final String KEY_CHILD_NAME = "child_name";
     static final String KEY_DATE_OF_BIRTH = "date_of_birth";
+    static final String KEY_CHILD_PHOTO = "child_photo";
 
     //Table vaccine column name
 
@@ -61,13 +62,14 @@ public class DbAdapter {
     static final String KEY_DATE_REACHED = "date_reached";
 
 
-    static final int DATABASE_VERSION = 12;
+    static final int DATABASE_VERSION = 13;
     static final String TAG = "DBUserAdapter";
 
 
     private static final String CREATE_TABLE_CHILD = "CREATE TABLE "
             + TABLE_CHILD + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," + KEY_CHILD_NAME
-            + " TEXT NOT NULL," + KEY_DATE_OF_BIRTH + " DATE NOT NULL " + ")";
+            + " TEXT NOT NULL," + KEY_DATE_OF_BIRTH + " DATE NOT NULL," + KEY_CHILD_PHOTO
+            + " TEXT NOT NULL "  + ")";
 
     private static final String CREATE_TABLE_VACCINE = "CREATE TABLE "
             + TABLE_VACCINE + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -187,6 +189,7 @@ public class DbAdapter {
         ContentValues values = new ContentValues();
         values.put(KEY_CHILD_NAME, child.getName());
         values.put(KEY_DATE_OF_BIRTH, child.getDateOfBirth());
+        values.put(KEY_CHILD_PHOTO, child.getPhoto());
 
         // insert Row to table_child
         db.insert(TABLE_CHILD, null, values);
@@ -304,6 +307,7 @@ public class DbAdapter {
                 child.setId(Integer.parseInt(cursor.getString(0)));
                 child.setName(cursor.getString(1));
                 child.setDateOfBirth(cursor.getString(2));
+                child.setPhoto(cursor.getString(3));
 
                 // Adding child to list
                 listOfChildren.add(child);
