@@ -29,7 +29,11 @@ public class HeightFragmentList extends Fragment {
 
         getData();
         TextView tv = v.findViewById(R.id.textViewHeightList);
-        tv.setText(""+lista);
+        for (Child child : lista){
+            String entry = child.getDateMeasured() + "   " + Float.toString(child.getHeight()) + " cm" + "\n";
+            tv.append(entry);
+        }
+        //tv.setText(""+lista);
         return v;
     }
 
