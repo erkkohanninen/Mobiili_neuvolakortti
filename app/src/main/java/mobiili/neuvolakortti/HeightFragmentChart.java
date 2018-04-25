@@ -24,6 +24,7 @@ public class HeightFragmentChart extends Fragment {
 
     private int childId;
     private List<Child> lista;
+    float count;
 
     @Nullable
     @Override
@@ -44,14 +45,17 @@ public class HeightFragmentChart extends Fragment {
 
         ArrayList<Entry> yEntries = new ArrayList<>();
         final ArrayList<String> xEntries = new ArrayList<>();
+        count = 0;
 
         for(Child child : lista){
-            yEntries.add(new Entry(1,child.getHeight()));
+            yEntries.add(new Entry(count, child.getHeight()));
+            count = count +1;
         }
 
         for (Child child : lista){
             xEntries.add(child.getDateMeasured());
         }
+
 
         Log.d("Erkko","xEntries: " +xEntries);
         Log.d("Erkko","yEntries: " +yEntries);
@@ -63,7 +67,7 @@ public class HeightFragmentChart extends Fragment {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
 
-                return xEntries.get((int) value);/* % xEntries.size());*/
+                return xEntries.get((int) value);
             }
         });
         xAxis.setLabelCount(lista.size());
