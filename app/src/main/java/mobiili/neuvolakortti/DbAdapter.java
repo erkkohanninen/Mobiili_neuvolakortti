@@ -501,7 +501,8 @@ public class DbAdapter {
     public List<Child> getHeights(int childId) {
         List<Child> listOfHeights = new ArrayList<Child>();
 
-        String selectQuery = "SELECT height, date_measured, _id FROM " + TABLE_MEASURES + " WHERE " + KEY_CHILD_ID + " = '" + childId + "'";
+        String selectQuery = "SELECT height, date_measured, _id FROM " + TABLE_MEASURES + " WHERE "
+                + KEY_CHILD_ID + " = '" + childId + "'" + " AND height IS NOT '0.0' ORDER BY date_measured";
 
         Cursor cursor = db.rawQuery(selectQuery,null);
 
