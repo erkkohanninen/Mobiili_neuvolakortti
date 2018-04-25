@@ -46,9 +46,9 @@ public class GrowthActivity extends AppCompatActivity {
         heightFragment.setArguments(getIntent().getExtras());
         fragmentTransaction.add(R.id.fragment_frame, heightFragment);
 
-        HeightFragmentChart heightFragmentChart = new HeightFragmentChart();
-        heightFragmentChart.setArguments(getIntent().getExtras());
-        fragmentTransaction.add(R.id.fragment_frame_height,heightFragmentChart);
+        HeightFragmentList heightFragmentList = new HeightFragmentList();
+        fragmentTransaction.add(R.id.fragment_frame_height,heightFragmentList);
+        heightFragmentList.setArguments(getIntent().getExtras());
 
         fragmentTransaction.commit();
 
@@ -77,6 +77,7 @@ public class GrowthActivity extends AppCompatActivity {
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame, newFragment);
+        newFragment.setArguments(getIntent().getExtras());
         fragmentTransaction.commit();
     }
 
@@ -94,7 +95,7 @@ public class GrowthActivity extends AppCompatActivity {
 
         }   else {
 
-            newFragment = new HeightFragmentChart();
+            newFragment = new HeightFragmentList();
         }
 
         newFragment.setArguments(getIntent().getExtras());
@@ -118,8 +119,10 @@ public class GrowthActivity extends AppCompatActivity {
 
         }   else {
 
-            newFragment = new WeightFragmentChart();
+            newFragment = new WeightFragmentList();
         }
+
+        newFragment.setArguments(getIntent().getExtras());
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame_weight, newFragment);
