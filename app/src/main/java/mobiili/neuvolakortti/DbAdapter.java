@@ -523,6 +523,56 @@ public class DbAdapter {
         return listOfHeights;
 
     }
+
+    public List<Child> getWeights(int childId) {
+        List<Child> listOfWeights = new ArrayList<Child>();
+
+        String selectQuery = "SELECT weight, date_measured, _id FROM " + TABLE_MEASURES + " WHERE " + KEY_CHILD_ID + " = '" + childId + "'";
+
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Child weight = new Child();
+                weight.setWeight(cursor.getFloat(0));
+                weight.setDateMeasured(cursor.getString(1));
+                weight.setId(cursor.getInt(2));
+
+                listOfWeights.add(weight);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return listOfWeights;
+
+    }
+
+    public List<Child> getHeads(int childId) {
+        List<Child> listOfHeads = new ArrayList<Child>();
+
+        String selectQuery = "SELECT head, date_measured, _id FROM " + TABLE_MEASURES + " WHERE " + KEY_CHILD_ID + " = '" + childId + "'";
+
+        Cursor cursor = db.rawQuery(selectQuery,null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Child head = new Child();
+                head.setHeight(cursor.getFloat(0));
+                head.setDateMeasured(cursor.getString(1));
+                head.setId(cursor.getInt(2));
+
+                listOfHeads.add(head);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return listOfHeads;
+
+    }
 }
 
 

@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class HeightFragment extends Fragment {
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -17,8 +19,8 @@ public class HeightFragment extends Fragment {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        HeightFragmentChart heightFragmentChart = new HeightFragmentChart();
-        fragmentTransaction.add(R.id.fragment_frame_height,heightFragmentChart);
+        HeightFragmentList heightFragmentList = new HeightFragmentList();
+        fragmentTransaction.add(R.id.fragment_frame_height,heightFragmentList);
 
         fragmentTransaction.commit();
 
