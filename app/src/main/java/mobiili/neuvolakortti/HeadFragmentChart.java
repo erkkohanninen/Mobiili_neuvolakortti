@@ -51,19 +51,25 @@ public class HeadFragmentChart extends Fragment {
             xEntries.add(child.getDateMeasured());
         }
 
-        XAxis xAxis = chart.getXAxis();
+        final XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setLabelRotationAngle(-60);
+        xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
+                String val = null;
+                try {
+                    val = xEntries.get((int) value);
+                } catch (IndexOutOfBoundsException e) {
+                    //xAxis.setGranularityEnabled(false);
+                    return "";
 
-                return xEntries.get((int) value);
+                }
+
+                return val;
             }
         });
-
-        xAxis.setLabelCount(lista.size());
-        xAxis.setGranularity(1f);
 
         LineDataSet dataSet = new LineDataSet(yEntries, "Pituus");
         LineData lineData = new LineData(dataSet);

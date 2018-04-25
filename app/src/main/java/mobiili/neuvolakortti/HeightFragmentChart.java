@@ -37,7 +37,6 @@ public class HeightFragmentChart extends Fragment {
             childId = extras.getInt("ID");
         }
 
-        Log.d("Erkko","childId: " +childId);
 
         LineChart chart = (LineChart) v.findViewById(R.id.height_chart);
         getData();
@@ -56,13 +55,9 @@ public class HeightFragmentChart extends Fragment {
             xEntries.add(child.getDateMeasured());
         }
 
-
-        Log.d("Erkko","xEntries: " +xEntries);
-        Log.d("Erkko","yEntries: " +yEntries);
-
         final XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setLabelRotationAngle(-90);
+        xAxis.setLabelRotationAngle(-60);
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
