@@ -527,7 +527,8 @@ public class DbAdapter {
     public List<Child> getWeights(int childId) {
         List<Child> listOfWeights = new ArrayList<Child>();
 
-        String selectQuery = "SELECT weight, date_measured, _id FROM " + TABLE_MEASURES + " WHERE " + KEY_CHILD_ID + " = '" + childId + "'";
+        String selectQuery = "SELECT weight, date_measured, _id FROM " + TABLE_MEASURES + " WHERE "
+                + KEY_CHILD_ID + " = '" + childId + "'" + " AND weight IS NOT '0.0' ORDER BY date_measured";;
 
         Cursor cursor = db.rawQuery(selectQuery,null);
 
@@ -552,7 +553,8 @@ public class DbAdapter {
     public List<Child> getHeads(int childId) {
         List<Child> listOfHeads = new ArrayList<Child>();
 
-        String selectQuery = "SELECT head, date_measured, _id FROM " + TABLE_MEASURES + " WHERE " + KEY_CHILD_ID + " = '" + childId + "'";
+        String selectQuery = "SELECT head, date_measured, _id FROM " + TABLE_MEASURES + " WHERE "
+                + KEY_CHILD_ID + " = '" + childId + "'" + " AND head IS NOT '0.0' ORDER BY date_measured";;
 
         Cursor cursor = db.rawQuery(selectQuery,null);
 
