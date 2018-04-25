@@ -37,8 +37,11 @@ public class HeightFragmentChart extends Fragment {
             childId = extras.getInt("ID");
         }
 
+        Log.d("Erkko","childId: " +childId);
+
         LineChart chart = (LineChart) v.findViewById(R.id.height_chart);
         getData();
+
 
         ArrayList<Entry> yEntries = new ArrayList<>();
         final ArrayList<String> xEntries = new ArrayList<>();
@@ -53,18 +56,29 @@ public class HeightFragmentChart extends Fragment {
             xEntries.add(child.getDateMeasured());
         }
 
-        XAxis xAxis = chart.getXAxis();
+
+        Log.d("Erkko","xEntries: " +xEntries);
+        Log.d("Erkko","yEntries: " +yEntries);
+
+        final XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setLabelRotationAngle(-60);
+        xAxis.setLabelRotationAngle(-90);
+        xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
+                String val = null;
+                try {
+                    val = xEntries.get((int) value);
+                } catch (IndexOutOfBoundsException e) {
+                    //xAxis.setGranularityEnabled(false);
+                    return "";
 
-                return xEntries.get((int) value);
+                }
+
+                return val;
             }
         });
-        xAxis.setLabelCount(lista.size());
-        xAxis.setGranularity(1f);
 
         LineDataSet dataSet = new LineDataSet(yEntries, "Pituus");
         LineData lineData = new LineData(dataSet);

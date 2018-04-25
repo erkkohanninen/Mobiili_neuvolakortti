@@ -204,7 +204,7 @@ public class GrowthActivity extends AppCompatActivity {
                 DbAdapter db = new DbAdapter(GrowthActivity.this);
                 db.open();
                 //LISÄÄ TÄHÄN OIKEA ID!!
-                db.addMeasures(new Child(1, Float.valueOf(childWeight),
+                db.addMeasures(new Child(childId, Float.valueOf(childWeight),
                         Float.valueOf(childHeight), Float.valueOf(childHead), dateToDatabase));
                 db.close();
                 //Log.d("MITAT:", childWeight + " " + childHeight + " " + childHead + " " + dateToDatabase);
