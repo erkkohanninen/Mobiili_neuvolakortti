@@ -8,31 +8,77 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HeadFragmentChart extends Fragment {
+
+    private int childId;
+    private List<Child> lista;
+    float count;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
         View v = inflater.inflate(R.layout.fragment_head_chart,container,false);
+
+        Bundle extras = getArguments();
+        if (extras != null) {
+            childId = extras.getInt("ID");
+        }
+
         LineChart chart = (LineChart) v.findViewById(R.id.head_chart);
+        getData();
 
-        ArrayList<Entry> entries = new ArrayList<>();
+        ArrayList<Entry> yEntries = new ArrayList<>();
+        final ArrayList<String> xEntries = new ArrayList<>();
+        count = 0;
 
-        entries.add(new Entry(3,2));
-        entries.add(new Entry(8,3));
+        for(Child child : lista){
+            yEntries.add(new Entry(count, child.getHead()));
+            count = count +1;
+        }
 
-        LineDataSet dataSet = new LineDataSet(entries, "Pään ympärys");
+        for (Child child : lista){
+            xEntries.add(child.getDateMeasured());
+        }
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setLabelRotationAngle(-60);
+        xAxis.setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+
+                return xEntries.get((int) value);
+            }
+        });
+
+        xAxis.setLabelCount(lista.size());
+        xAxis.setGranularity(1f);
+
+        LineDataSet dataSet = new LineDataSet(yEntries, "Pituus");
         LineData lineData = new LineData(dataSet);
         chart.setData(lineData);
+        chart.getDescription().setEnabled(false);
 
         chart.invalidate();
 
         return v;
-}
+    }
+
+    public void getData(){
+        DbAdapter db = new DbAdapter(getActivity());
+        db.open();
+        lista = db.getHeads(childId);
+        db.close();
+    }
 }

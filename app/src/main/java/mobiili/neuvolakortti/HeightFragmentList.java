@@ -39,7 +39,7 @@ public class HeightFragmentList extends Fragment {
             String entry = dateToShow + "   " + Float.toString(child.getHeight()) + " cm" + "\n";
             tv.append(entry);
         }
-        //tv.setText(""+lista);
+
         return v;
     }
 

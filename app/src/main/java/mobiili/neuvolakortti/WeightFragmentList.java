@@ -3,6 +3,7 @@ package mobiili.neuvolakortti;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +28,16 @@ public class WeightFragmentList extends Fragment {
 
         getData();
         TextView tv = v.findViewById(R.id.textViewWeightList);
-        for (Child child : lista) {
-            String entry = child.getDateMeasured() + "   " + Float.toString(child.getWeight()) + " kg" + "\n";
+        tv.setMovementMethod(new ScrollingMovementMethod());
+        tv.append("Päivämäärä  Paino" + "\n");
+        for (Child child : lista){
+            String date = child.getDateMeasured();
+            String[] date_splitted = date.split("-");
+            String dateToShow = date_splitted[2] + "." + date_splitted[1] + "." + date_splitted[0];
+            String entry = dateToShow + "   " + Float.toString(child.getWeight()) + " cm" + "\n";
             tv.append(entry);
         }
+
         return v;
     }
 

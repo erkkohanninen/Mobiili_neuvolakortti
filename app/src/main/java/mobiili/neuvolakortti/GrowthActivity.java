@@ -143,8 +143,10 @@ public class GrowthActivity extends AppCompatActivity {
 
         }   else {
 
-            newFragment = new HeadFragmentChart();
+            newFragment = new HeadFragmentList();
         }
+
+        newFragment.setArguments(getIntent().getExtras());
 
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_frame_head, newFragment);

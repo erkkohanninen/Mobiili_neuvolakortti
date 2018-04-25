@@ -561,7 +561,7 @@ public class DbAdapter {
         if (cursor.moveToFirst()) {
             do {
                 Child head = new Child();
-                head.setHeight(cursor.getFloat(0));
+                head.setHead(cursor.getFloat(0));
                 head.setDateMeasured(cursor.getString(1));
                 head.setId(cursor.getInt(2));
 
