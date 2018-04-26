@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="activity_horizontal_margin">8dp</dimen>
+    <dimen name="activity_vertical_margin">8dp</dimen>
     <dimen name="margin_between">16dp</dimen>
-    <dimen name="tv_text_size">12sp</dimen>
+    <dimen name="tv_text_size">15sp</dimen>
     <dimen name="et_text_size">15sp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="row_padding_vertical">10dp</dimen>

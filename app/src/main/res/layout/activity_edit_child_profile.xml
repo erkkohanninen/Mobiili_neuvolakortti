@@ -12,8 +12,8 @@
     <ImageView
         android:layout_marginTop="16dp"
         android:id="@+id/photo"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
         android:src="@drawable/ic_face_24dp"
         android:layout_gravity="center"/>
 
@@ -57,7 +57,7 @@
             android:id="@+id/et_ec_weight"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/birth_weigh"
+            android:hint="@string/birth_weigh"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:textSize="@dimen/et_text_size"/>
@@ -74,7 +74,7 @@
             android:id="@+id/et_ec_height"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/birth_height"
+            android:hint="@string/birth_height"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:textSize="@dimen/et_text_size"/>
@@ -90,23 +90,25 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/activity_vertical_margin">
 
         <EditText
             android:id="@+id/et_ec_head"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/head"
+            android:layout_weight="0.5"
+            android:hint="@string/head"
             android:inputType="numberDecimal"
             android:textSize="@dimen/et_text_size"/>
 
         <TextView
             android:id="@+id/tv_head"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/height_cm"
             android:textSize="@dimen/tv_text_size"/>
 

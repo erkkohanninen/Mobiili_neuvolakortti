@@ -26,8 +26,8 @@
 
             <ImageView
                 android:id="@+id/photo"
-                android:layout_width="86dp"
-                android:layout_height="86dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:layout_marginRight="@dimen/margin_between"
                 app:srcCompat="@drawable/ic_face_24dp" />
 
@@ -45,8 +45,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:fontFamily="monospace"
-                    android:text="Nimi"
+                    android:textSize="32sp"
                     />
 
                 <TextView
@@ -54,9 +53,8 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="monospace"
                     android:text="0v 0kk 0pv"
-                    android:textSize="16dp"/>
+                    android:textSize="20sp"/>
 
             </LinearLayout>
 

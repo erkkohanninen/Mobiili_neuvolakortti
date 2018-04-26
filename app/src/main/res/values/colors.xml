@@ -7,4 +7,6 @@
     <color name="title">#222222</color>
     <color name="header_text">#ffffff</color>
     <color name="background">#E5E1E1</color>
+    <color name="button">#ffffff</color>
+    <color name="divider">#999999</color>
 </resources>

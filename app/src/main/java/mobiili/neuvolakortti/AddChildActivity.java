@@ -156,7 +156,6 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
                 .setAspectRatio(1, 1)
                 .setOutputCompressFormat(Bitmap.CompressFormat.JPEG)
                 .setOutputCompressQuality(50)
-                .setCropShape(CropImageView.CropShape.OVAL)
                 .setOutputUri(outputUri)
                 .start(this);
     }
