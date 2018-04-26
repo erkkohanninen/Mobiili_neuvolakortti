@@ -2,8 +2,13 @@ package mobiili.neuvolakortti;
 
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -11,7 +16,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.File;
+import java.util.UUID;
 
 public class EditChildProfileActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -20,6 +32,7 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
     private EditText etHeight;
     private EditText etHead;
     private Button dateButton;
+    private ImageView imageView;
     private int id;
     private String name = "";
     private String dateob = "";
@@ -28,9 +41,11 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
     private String head ="";
     private String newName ="";
     private String newDateToDB = null;
+    private String childPhoto ="";
     private float newWeight;
     private float newHeight;
     private float newHead;
+    private ActionBar actionBar;
     private DbAdapter db = new DbAdapter(this);
 
 
@@ -42,11 +57,15 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
 
         db.open();
 
+
+        actionBar = getSupportActionBar();
+
         etName = (EditText) findViewById(R.id.et_ec_name);
         dateButton = (Button) findViewById(R.id.date_button);
         etWeight = (EditText) findViewById(R.id.et_ec_weight);
         etHeight = (EditText) findViewById(R.id.et_ec_height);
         etHead = (EditText) findViewById(R.id.et_ec_head);
+        imageView = findViewById(R.id.photo);
 
         Intent intent = getIntent();
         id = getIntent().getExtras().getInt("ID");
@@ -56,12 +75,30 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         weight = db.getCurrentChildData(id, 2);
         height = db.getCurrentChildData(id, 3);
         head = db.getCurrentChildData(id, 4);
+        childPhoto = db.getCurrentChild(id, 3);
 
         etName.setText(name);
         dateButton.setText(dateob);
         etWeight.setText(weight);
         etHeight.setText(height);
         etHead.setText(head);
+
+        actionBar.setTitle("Muokkaa profiilia - " + name);
+
+        if (childPhoto.equals("default")){
+            imageView.setImageResource(R.drawable.ic_face_24dp);
+        }
+        else {
+            imageView.setImageURI(getChildPhotoUri(childPhoto));
+        }
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                childPhoto = UUID.randomUUID().toString();
+                takePicture(getChildPhotoUri(childPhoto));
+            }
+        });
     }
 
 
@@ -103,11 +140,11 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
             // update current child name and date of birth
             // if date of birth not changed, get original date
             if(newDateToDB != null) {
-                db.updateChild(id, newName, newDateToDB);
+                db.updateChild(id, newName, newDateToDB, childPhoto);
             }
             else {
                 newDateToDB = db.getCurrentChild(id, 2);
-                db.updateChild(id, newName, newDateToDB);
+                db.updateChild(id, newName, newDateToDB, childPhoto);
             }
             // update current child's birth measures
             newWeight = Float.valueOf(weight);
@@ -169,6 +206,41 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
                 return false;
             }
         return true;
+    }
+
+
+    //Profile picture
+    public void takePicture(Uri outputUri) {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setAspectRatio(1, 1)
+                .setOutputCompressFormat(Bitmap.CompressFormat.JPEG)
+                .setOutputCompressQuality(50)
+                .setOutputUri(outputUri)
+                .start(this);
+    }
+
+    public Uri getChildPhotoUri(String photo) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File file = new File(directory, photo + ".jpg");
+        Uri outputUri = Uri.fromFile(file);
+
+        Log.d("TAG", outputUri.toString());
+        return outputUri;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                imageView.setImageURI(resultUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
     }
 
 }

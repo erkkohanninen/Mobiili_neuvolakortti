@@ -9,16 +9,9 @@
     android:layout_marginLeft="@dimen/activity_vertical_margin"
     tools:context="mobiili.neuvolakortti.AddChildActivity">
 
-    <TextView
-        android:id="@+id/tv_add_child"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_child"
-        android:textSize="@dimen/tv_text_size"
-        android:layout_marginTop="@dimen/margin_between"/>
-
     <ImageView
         android:id="@+id/photo"
+        android:layout_marginTop="16dp"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:src="@drawable/ic_face_24dp"

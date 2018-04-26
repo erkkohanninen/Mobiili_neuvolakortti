@@ -9,15 +9,9 @@
     android:layout_marginLeft="@dimen/activity_vertical_margin"
     tools:context="mobiili.neuvolakortti.EditChildProfileActivity">
 
-    <TextView
-        android:id="@+id/tv_add_child"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/edit_child"
-        android:textSize="@dimen/tv_text_size"
-        android:layout_marginTop="@dimen/margin_between"/>
-
     <ImageView
+        android:layout_marginTop="16dp"
+        android:id="@+id/photo"
         android:layout_width="96dp"
         android:layout_height="96dp"
         android:src="@drawable/ic_face_24dp"
@@ -47,6 +41,12 @@
         android:text="@string/choose"
         android:onClick="datePicker"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:text="Syntymämitat:"
+        android:textSize="@dimen/tv_text_size"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

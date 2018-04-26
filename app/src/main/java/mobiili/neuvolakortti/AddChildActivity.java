@@ -1,5 +1,6 @@
 package mobiili.neuvolakortti;
 
+import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -40,6 +41,7 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
     private String head ="";
     private String photo = "default";
     private DbAdapter db = new DbAdapter(this);
+    private android.support.v7.app.ActionBar actionBar;
 
 
 
@@ -53,6 +55,10 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
         etHead = (EditText)findViewById(R.id.et_ac_head);
         imageView = findViewById(R.id.photo);
 
+        //change the text in actionbar
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Lisää lapsen tiedot");
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,8 +71,7 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
     // Returns to MainActivity without saving child info to database
 
     public void cancelAddChild(View view){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 
     // save child´s info to database and return to MainActivity
@@ -93,8 +98,7 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
             Toast.makeText(this, "Lapsen tiedot lisätty", Toast.LENGTH_LONG).show();
             db.close();
 
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            finish();
 
             }
 
@@ -152,6 +156,7 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
                 .setAspectRatio(1, 1)
                 .setOutputCompressFormat(Bitmap.CompressFormat.JPEG)
                 .setOutputCompressQuality(50)
+                .setCropShape(CropImageView.CropShape.OVAL)
                 .setOutputUri(outputUri)
                 .start(this);
     }

@@ -44,7 +44,13 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder
         holder.currentChild = myValues.get(position);
         holder.nameTextView.setText(holder.currentChild.getName());
         holder.ageTextView.setText(calcAge(holder.currentChild.getDateOfBirth()));
-        holder.imageView.setImageURI(getChildPhotoUri(holder.currentChild.getPhoto(), context));
+
+        if (holder.currentChild.getPhoto().equals("default")) {
+            holder.imageView.setImageResource(R.drawable.ic_face_24dp);
+        }
+        else {
+            holder.imageView.setImageURI(getChildPhotoUri(holder.currentChild.getPhoto(), context));
+        }
 
         final Button button = holder.buttonOptions;
 

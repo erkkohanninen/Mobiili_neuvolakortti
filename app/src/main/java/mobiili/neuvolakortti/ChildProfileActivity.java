@@ -52,8 +52,6 @@ public class ChildProfileActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
         finish();
     }
 
@@ -144,7 +142,13 @@ public class ChildProfileActivity extends AppCompatActivity {
         }
 
         db.close();
-        imageView.setImageURI(getChildPhotoUri(childPhoto, getApplicationContext()));
+
+        if (childPhoto.equals("default")){
+            imageView.setImageResource(R.drawable.ic_face_24dp);
+        }
+        else {
+            imageView.setImageURI(getChildPhotoUri(childPhoto, getApplicationContext()));
+        }
     }
 
     public Uri getChildPhotoUri(String photo, Context context) {

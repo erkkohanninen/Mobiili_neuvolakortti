@@ -221,13 +221,14 @@ public class DbAdapter {
 
     //-----updates child's name and date of birth------
 
-    public void updateChild(Integer childId, String newName, String newDate) {
+    public void updateChild(Integer childId, String newName, String newDate, String newPhoto) {
 
         // adding values to put in table_child
         ContentValues newValues = new ContentValues();
 
         newValues.put(KEY_CHILD_NAME, newName);
         newValues.put(KEY_DATE_OF_BIRTH, newDate);
+        newValues.put(KEY_CHILD_PHOTO, newPhoto);
         String where = "_id=?";
         String[] whereArgs = new String[]{String.valueOf(childId)};
         db.update(TABLE_CHILD, newValues, where, whereArgs);
@@ -323,20 +324,10 @@ public class DbAdapter {
 
     //-----Get all developments------
 
-    public ArrayList<String> getAllDevelopments() {
-        ArrayList<String> listOfDevelopments = new ArrayList<>();
-        //Selecet all -query
-        String selectQuery = "SELECT " + KEY_DEVELOPMENT_NAME + " FROM " + TABLE_DEVELOPMENTS;
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        //looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                listOfDevelopments.add(cursor.getString(0));
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return listOfDevelopments;
+    public Cursor getAllDevelopments() {
+        return db.rawQuery("SELECT development_name FROM " + TABLE_DEVELOPMENTS, null);
     }
+
 
     //-----Adds new development to developments-table------
 
@@ -353,6 +344,8 @@ public class DbAdapter {
         }
 
     }
+
+
 
     //-----Gets development_id based on development name------
 
@@ -445,7 +438,6 @@ public class DbAdapter {
         } else {
             return "notfound";
         }
-
 
     }
 

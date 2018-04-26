@@ -20,6 +20,7 @@
     <string name="add_head">Päänympärys (cm)</string>
     <string name="add_growth">Lisää kasvutiedot:</string>
     <string name="add_development">Lisää kehitysaskel:</string>
+    <string name="development">Kehitysaskel</string>
     <string name="vaccine">Rokote</string>
     <string name="date">Päivämäärä</string>
     <string name="vaccines">Rokotukset - </string>

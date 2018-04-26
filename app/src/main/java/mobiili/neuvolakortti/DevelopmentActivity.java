@@ -3,6 +3,7 @@ package mobiili.neuvolakortti;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class DevelopmentActivity extends AppCompatActivity{
     private String childName;
     private int childId;
     private DbAdapter dbb = new DbAdapter(this);
+    private ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,10 @@ public class DevelopmentActivity extends AppCompatActivity{
             childName = extras.getString("NAME");
             childId = extras.getInt("ID");
         }
+
+        //change the text in actionbar
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Kehitys - " + childName);
 
         // Populate recyclerview with child´s developments
         getAllChildDevelopments();
@@ -122,7 +128,17 @@ public class DevelopmentActivity extends AppCompatActivity{
     public void loadSpinnerData(){
         DbAdapter db = new DbAdapter(this);
         db.open();
-        developments = db.getAllDevelopments();
+        Cursor cursor = db.getAllDevelopments();
+        developments = new ArrayList<String>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                developments.add(cursor.getString(0));
+            } while (cursor.moveToNext());
+
+        }
+
+        cursor.close();
         db.close();
 
     }

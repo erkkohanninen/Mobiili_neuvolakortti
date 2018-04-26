@@ -70,7 +70,8 @@
                     android:id="@+id/edit_profile_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/ic_menu_edit"
+                    app:srcCompat="@drawable/ic_edit_black_24dp"
+                    android:background="@android:color/transparent"
                     android:onClick="editProfile"/>
             </LinearLayout>
         </LinearLayout>
