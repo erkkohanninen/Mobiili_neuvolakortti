@@ -149,6 +149,7 @@ public class ChildProfileActivity extends AppCompatActivity {
             imageView.setImageResource(R.drawable.ic_face_24dp);
         }
         else {
+            imageView.setImageURI(null);
             imageView.setImageURI(getChildPhotoUri(childPhoto, getApplicationContext()));
         }
     }

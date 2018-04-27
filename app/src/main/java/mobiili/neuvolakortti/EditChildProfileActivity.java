@@ -95,7 +95,9 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                childPhoto = UUID.randomUUID().toString();
+                if (childPhoto.equals("default")) {
+                    childPhoto = UUID.randomUUID().toString();
+                }
                 takePicture(getChildPhotoUri(childPhoto));
             }
         });
@@ -208,6 +210,14 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         return true;
     }
 
+    //Take picture with fab
+    public void takePhoto(View view) {
+        if (childPhoto.equals("default")) {
+            childPhoto = UUID.randomUUID().toString();
+        }
+        takePicture(getChildPhotoUri(childPhoto));
+    }
+
 
     //Profile picture
     public void takePicture(Uri outputUri) {
@@ -236,6 +246,7 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
+                imageView.setImageURI(null);
                 imageView.setImageURI(resultUri);
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();

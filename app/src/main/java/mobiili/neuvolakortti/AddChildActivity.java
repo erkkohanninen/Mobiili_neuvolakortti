@@ -62,8 +62,7 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                photo = UUID.randomUUID().toString();
-                takePicture(getChildPhotoUri(photo));
+                takePhoto(view);
             }
             });
     }
@@ -148,6 +147,14 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
             return false;
         }
         return true;
+    }
+
+    // Add picture fab
+    public void takePhoto(View view) {
+        if (photo.equals("default")) {
+            photo = UUID.randomUUID().toString();
+        }
+        takePicture(getChildPhotoUri(photo));
     }
 
     public void takePicture(Uri outputUri) {
