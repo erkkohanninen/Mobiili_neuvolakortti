@@ -36,7 +36,13 @@ public class GrowthActivity extends AppCompatActivity {
             childId = extras.getInt("ID");
         }
 
-        actionBar = getSupportActionBar();
+
+        // add back button to actionbar
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        //change the text in actionbar
         actionBar.setTitle("Kasvutiedot - " + childName);
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -233,6 +239,13 @@ public class GrowthActivity extends AppCompatActivity {
         List heightList = (List) dbAdapter.getHeights(childId);
         dbAdapter.close();
         return heightList;
+    }
+
+    @Override
+    // when actionbar back button pressed
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

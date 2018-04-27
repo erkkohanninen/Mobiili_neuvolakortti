@@ -1,7 +1,9 @@
 package mobiili.neuvolakortti;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
@@ -72,8 +74,36 @@ public class ChildAdapter extends RecyclerView.Adapter<ChildAdapter.MyViewHolder
                                 context.startActivity(intent);
                               return true;
                             case R.id.delete_profile:
-                                //int pos = holder.getAdapterPosition();
-                                //myValues.remove(pos);
+
+                                AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+                                alertDialog.setTitle("Oletko varma?");
+                                alertDialog.setMessage("Poistetaanko profiili \""+holder.currentChild.getName()+"\"?\n" +
+                                        "Huom! Kaikki profiilin tiedot poistetaan.");
+
+                                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Poista",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                // remove child's data from db
+                                                DbAdapter db = new DbAdapter(context);
+                                                db.open();
+                                                db.deleteChild(String.valueOf(holder.currentChild.getId()));
+                                                db.close();
+
+                                                // remove profile from list
+                                                int pos = holder.getAdapterPosition();
+                                                myValues.remove(pos);
+                                                notifyDataSetChanged();
+                                            }
+                                        });
+                                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Peruuta",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                                alertDialog.show();
                                 return true;
                         }
                         return false;

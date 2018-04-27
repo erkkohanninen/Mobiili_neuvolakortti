@@ -40,9 +40,13 @@ public class ChildProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_profile);
 
+        // add back button to actionbar
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         Intent intent = getIntent();
         id = getIntent().getExtras().getInt("ID");
-
         editButton = (ImageButton) findViewById(R.id.edit_profile_button);
         nameTextView = (TextView) findViewById(R.id.tv_profile_name);
         ageTextView = (TextView) findViewById(R.id.tv_profile_age);
@@ -55,6 +59,13 @@ public class ChildProfileActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    // when actionbar back button pressed
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     public void editProfile(View view) {

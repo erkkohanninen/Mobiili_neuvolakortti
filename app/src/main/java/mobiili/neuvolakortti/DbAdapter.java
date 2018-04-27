@@ -62,7 +62,7 @@ public class DbAdapter {
     static final String KEY_DATE_REACHED = "date_reached";
 
 
-    static final int DATABASE_VERSION = 13;
+    static final int DATABASE_VERSION = 14;
     static final String TAG = "DBUserAdapter";
 
 
@@ -216,6 +216,19 @@ public class DbAdapter {
         } else {
             Log.d(TAG, "notfound");
         }
+    }
+
+    //-----delete all child's data------
+    public void deleteChild(String id){
+
+        //delete child from table
+        db.execSQL("DELETE FROM " + TABLE_CHILD + " WHERE " + KEY_ID + " = '" + id + "';");
+        //delete child's measures
+        db.execSQL("DELETE FROM " + TABLE_MEASURES + " WHERE " + KEY_CHILD_ID + " = '" + id + "';");
+        // delete child's developments
+        db.execSQL("DELETE FROM " + TABLE_DEVELOPMENT_STEP + " WHERE " + KEY_CHILD_ID + " = '" + id + "';");
+        //delete child's vaccinations
+        db.execSQL("DELETE FROM " + TABLE_VACCINATION + " WHERE " + KEY_CHILD_ID + " = '" + id + "';");
     }
 
 

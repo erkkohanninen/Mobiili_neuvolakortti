@@ -44,8 +44,12 @@ public class VaccinationActivity extends AppCompatActivity{
             childName = extras.getString("NAME");
             childId = extras.getInt("ID");
         }
+        // add back button to actionbar
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         //change the text in actionbar
-        actionBar = getSupportActionBar();
         actionBar.setTitle("Rokotukset - " + childName);
 
         // Populate recyclerview with child´s vaccinations
@@ -149,6 +153,13 @@ public class VaccinationActivity extends AppCompatActivity{
         db.open();
         vaccineList = db.getAllVaccinations(childId);
         db.close();
+    }
+
+    @Override
+    // when actionbar back button pressed
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

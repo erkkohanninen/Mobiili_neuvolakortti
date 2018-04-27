@@ -58,17 +58,21 @@
         android:text="@string/choose"
         android:onClick="datePicker"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:text="Syntymämitat:"
-        android:textSize="@dimen/tv_text_size"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/activity_vertical_margin">
+
+
+        <TextView
+            android:id="@+id/tv_bweight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/birth_weigh"
+            android:textSize="@dimen/tv_text_size"
+            android:layout_marginRight="@dimen/fab_margin"/>
+
 
         <EditText
             android:id="@+id/et_ec_weight"
@@ -86,6 +90,22 @@
             android:text="@string/weight_g"
             android:layout_weight="0.5"
             android:textSize="@dimen/tv_text_size"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/tv_bheight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/birth_height"
+            android:textSize="@dimen/tv_text_size"
+            android:layout_marginRight="@dimen/fab_margin"/>
+
 
         <EditText
             android:id="@+id/et_ec_height"
@@ -112,6 +132,14 @@
         android:orientation="horizontal"
         android:layout_marginTop="@dimen/activity_vertical_margin">
 
+        <TextView
+            android:id="@+id/tv_bhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/head"
+            android:textSize="@dimen/tv_text_size"
+            android:layout_marginRight="@dimen/fab_margin"/>
+
         <EditText
             android:id="@+id/et_ec_head"
             android:layout_width="0dp"
@@ -130,7 +158,6 @@
             android:textSize="@dimen/tv_text_size"/>
 
     </LinearLayout>
-
 
 
 

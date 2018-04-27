@@ -45,8 +45,12 @@ public class DevelopmentActivity extends AppCompatActivity{
             childId = extras.getInt("ID");
         }
 
+        // add back button to actionbar
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
         //change the text in actionbar
-        actionBar = getSupportActionBar();
         actionBar.setTitle("Kehitys - " + childName);
 
         // Populate recyclerview with child´s developments
@@ -150,6 +154,13 @@ public class DevelopmentActivity extends AppCompatActivity{
         db.open();
         developmentList = db.getAllChildDevelopments(childId);
         db.close();
+    }
+
+    @Override
+    // when actionbar back button pressed
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
 }

@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -49,6 +50,12 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_child);
+
+        // add close button to actionbar
+        final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_24dp);
+
         etChildname = (EditText)findViewById(R.id.etChildName);
         etWeight = (EditText)findViewById(R.id.et_ac_weight);
         etHeight = (EditText)findViewById(R.id.et_ac_height);
@@ -56,7 +63,6 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
         imageView = findViewById(R.id.photo);
 
         //change the text in actionbar
-        actionBar = getSupportActionBar();
         actionBar.setTitle("Lisää lapsen tiedot");
 
         imageView.setOnClickListener(new View.OnClickListener() {
@@ -188,5 +194,18 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
                 Exception error = result.getError();
             }
         }
+    }
+
+    @Override
+    // when actionbar close button is clicked
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

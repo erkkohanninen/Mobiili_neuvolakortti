@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -55,10 +56,12 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_child_profile);
 
+        // add close button to actionbar
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_24dp);
+
         db.open();
-
-
-        actionBar = getSupportActionBar();
 
         etName = (EditText) findViewById(R.id.et_ec_name);
         dateButton = (Button) findViewById(R.id.date_button);
@@ -83,6 +86,7 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         etHeight.setText(height);
         etHead.setText(head);
 
+        // add profile name to actionbar
         actionBar.setTitle("Muokkaa profiilia - " + name);
 
         if (childPhoto.equals("default")){
@@ -252,6 +256,19 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
                 Exception error = result.getError();
             }
         }
+    }
+
+    // when actionbar close button is pressed
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

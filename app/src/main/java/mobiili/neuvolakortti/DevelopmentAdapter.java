@@ -90,9 +90,9 @@ public class DevelopmentAdapter extends RecyclerView.Adapter<DevelopmentAdapter.
             holder.button_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String clickedDevelopment = developmentList.get(position).getName();
-                    String clickedDate = developmentList.get(position).getDate();
-                    String id = developmentList.get(position).getId();
+                    String clickedDevelopment = developmentList.get(position -1).getName();
+                    String clickedDate = developmentList.get(position -1).getDate();
+                    String id = developmentList.get(position -1).getId();
                     Log.d("NIMI:", clickedDevelopment);
                     Log.d("DATE", clickedDate);
                     Log.d("ID", id);
