@@ -34,7 +34,7 @@ public class WeightFragmentList extends Fragment {
             String date = child.getDateMeasured();
             String[] date_splitted = date.split("-");
             String dateToShow = date_splitted[2] + "." + date_splitted[1] + "." + date_splitted[0];
-            String entry = dateToShow + "   " + Float.toString(child.getWeight()) + " cm" + "\n";
+            String entry = dateToShow + "   " + Float.toString(child.getWeight()) + " kg" + "\n";
             tv.append(entry);
         }
 

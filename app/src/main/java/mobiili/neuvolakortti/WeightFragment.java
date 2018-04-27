@@ -18,6 +18,7 @@ public class WeightFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         WeightFragmentList weightFragmentList = new WeightFragmentList();
+        weightFragmentList.setArguments(getArguments());
         fragmentTransaction.add(R.id.fragment_frame_weight,weightFragmentList);
 
         fragmentTransaction.commit();

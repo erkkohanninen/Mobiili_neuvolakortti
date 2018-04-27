@@ -18,6 +18,7 @@ public class HeadFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         HeadFragmentList headFragmentList = new HeadFragmentList();
+        headFragmentList.setArguments(getArguments());
         fragmentTransaction.add(R.id.fragment_frame_head,headFragmentList);
 
         fragmentTransaction.commit();

@@ -20,6 +20,7 @@ public class HeightFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         HeightFragmentList heightFragmentList = new HeightFragmentList();
+        heightFragmentList.setArguments(getArguments());
         fragmentTransaction.add(R.id.fragment_frame_height,heightFragmentList);
 
         fragmentTransaction.commit();
