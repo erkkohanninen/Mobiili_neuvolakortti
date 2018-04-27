@@ -131,8 +131,12 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         weight = etWeight.getText().toString();
         height = etHeight.getText().toString();
         head = etHead.getText().toString();
-        deletePhoto(childPhoto);
-        childPhoto = newChildPhoto;
+
+        if (!childPhoto.equals(newChildPhoto)) {
+            deletePhoto(childPhoto);
+            childPhoto = newChildPhoto;
+        }
+
 
         String[] strings = {newName, weight, height, head};
 
@@ -184,7 +188,7 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         String strDay = String.valueOf(day);
 
 
-        if(month < 9) {
+        if(month < 10) {
             strMonth = "0" + strMonth;
         }
 

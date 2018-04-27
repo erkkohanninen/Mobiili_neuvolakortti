@@ -129,7 +129,7 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
         String strDay = String.valueOf(day);
 
 
-        if(month < 9) {
+        if(month < 10) {
             strMonth = "0" + strMonth;
 
         }
