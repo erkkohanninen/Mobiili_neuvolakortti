@@ -43,6 +43,7 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
     private String newName ="";
     private String newDateToDB = null;
     private String childPhoto ="";
+    private String newChildPhoto;
     private float newWeight;
     private float newHeight;
     private float newHead;
@@ -79,6 +80,7 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         height = db.getCurrentChildData(id, 3);
         head = db.getCurrentChildData(id, 4);
         childPhoto = db.getCurrentChild(id, 3);
+        newChildPhoto = childPhoto;
 
         etName.setText(name);
         dateButton.setText(dateob);
@@ -99,10 +101,7 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (childPhoto.equals("default")) {
-                    childPhoto = UUID.randomUUID().toString();
-                }
-                takePicture(getChildPhotoUri(childPhoto));
+                takePhoto(view);
             }
         });
     }
@@ -132,6 +131,8 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         weight = etWeight.getText().toString();
         height = etHeight.getText().toString();
         head = etHead.getText().toString();
+        deletePhoto(childPhoto);
+        childPhoto = newChildPhoto;
 
         String[] strings = {newName, weight, height, head};
 
@@ -216,10 +217,8 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
 
     //Take picture with fab
     public void takePhoto(View view) {
-        if (childPhoto.equals("default")) {
-            childPhoto = UUID.randomUUID().toString();
-        }
-        takePicture(getChildPhotoUri(childPhoto));
+        newChildPhoto = UUID.randomUUID().toString();
+        takePicture(getChildPhotoUri(newChildPhoto));
     }
 
 
@@ -239,9 +238,15 @@ public class EditChildProfileActivity extends AppCompatActivity implements DateP
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         File file = new File(directory, photo + ".jpg");
         Uri outputUri = Uri.fromFile(file);
-
         Log.d("TAG", outputUri.toString());
         return outputUri;
+    }
+
+    public void deletePhoto(String photo) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File file = new File(directory, photo + ".jpg");
+        file.delete();
     }
 
     @Override

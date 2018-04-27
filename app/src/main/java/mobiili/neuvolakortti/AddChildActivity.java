@@ -76,6 +76,14 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
     // Returns to MainActivity without saving child info to database
 
     public void cancelAddChild(View view){
+        deletePhoto(photo);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        deletePhoto(photo);
         finish();
     }
 
@@ -181,6 +189,13 @@ public class AddChildActivity extends AppCompatActivity implements DatePickerDia
 
         Log.d("TAG", outputUri.toString());
         return outputUri;
+    }
+
+    public void deletePhoto(String photo) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File file = new File(directory, photo + ".jpg");
+        file.delete();
     }
 
     @Override
